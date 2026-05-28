@@ -1,0 +1,60 @@
+---
+const logos = [
+  { src: '/logos/epoch-ai.svg',                    alt: 'Epoch AI' },
+  { src: '/logos/apollo-research.svg',              alt: 'Apollo Research' },
+  { src: '/logos/future-of-life-institute.png',     alt: 'Future of Life Institute' },
+  { src: '/logos/80000-hours.svg',                  alt: '80,000 Hours' },
+  { src: '/logos/giving-what-we-can.svg',           alt: 'Giving What We Can' },
+  { src: '/logos/bluedot-impact.svg',               alt: 'BlueDot Impact' },
+  { src: '/logos/gov-ai.png',                       alt: 'GovAI' },
+  { src: '/logos/openai.svg',                       alt: 'OpenAI' },
+  { src: '/logos/longview-philanthropy.svg',         alt: 'Longview Philanthropy' },
+  { src: '/logos/forethought-foundation.svg',       alt: 'Forethought Foundation' },
+  { src: '/logos/center-for-effective-altruism.png',alt: 'Center for Effective Altruism' },
+  { src: '/logos/horizon-institute.svg',            alt: 'Horizon Institute' },
+  { src: '/logos/aiwi.svg',                         alt: 'AIWI' },
+  { src: '/logos/gieffektivt.svg',                  alt: 'GiEffektivt' },
+];
+---
+
+<div class="scroller-wrap">
+  <div class="scroller-track">
+    {logos.map(({ src, alt }) => <img src={src} alt={alt} loading="lazy" />)}
+    {logos.map(({ src, alt }) => <img src={src} alt={alt} loading="lazy" aria-hidden="true" />)}
+  </div>
+</div>
+
+<style>
+  .scroller-wrap {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    padding: var(--space-8) 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .scroller-track {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    width: max-content;
+    animation: logo-scroll 80s linear infinite;
+  }
+
+  .scroller-track img {
+    height: 30px;
+    width: auto;
+    flex-shrink: 0;
+    filter: grayscale(1) contrast(0) brightness(3) opacity(0.4);
+  }
+
+  .scroller-track img[src*="bluedot"],
+  .scroller-track img[src*="gieffektivt"] {
+    height: 22px;
+  }
+
+  @keyframes logo-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+</style>
