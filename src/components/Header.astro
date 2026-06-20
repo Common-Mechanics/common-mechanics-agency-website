@@ -1,4 +1,4 @@
-<header class="section header-section">
+<header class="section header-section" data-rule="bottom">
   <p class="wordmark">Common Mechanics</p>
   <h1 class="tagline">The design and web partner for high-impact nonprofits.</h1>
 </header>
@@ -10,11 +10,35 @@
   }
 
   .wordmark {
+    display: inline-block;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: var(--font-size-sm);
-    color: var(--color-fg);
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-bg);          /* inverted: page colour as the text */
+    background: var(--color-accent); /* orange badge */
     letter-spacing: var(--tracking-wide);
-    margin-bottom: var(--space-4);
+    padding: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-6);
+
+    /* Inverted-radius (concave) corner scoops — mechanical cutout vibe.
+       Four radial-gradient mask quadrants, each removing a quarter-circle
+       from one corner, revealing the page colour behind the badge. */
+    --notch: 7px;
+    -webkit-mask:
+      radial-gradient(var(--notch) at top left,     #0000 98%, #000) top left,
+      radial-gradient(var(--notch) at top right,    #0000 98%, #000) top right,
+      radial-gradient(var(--notch) at bottom left,  #0000 98%, #000) bottom left,
+      radial-gradient(var(--notch) at bottom right, #0000 98%, #000) bottom right;
+    -webkit-mask-size: 50% 50%;
+    -webkit-mask-repeat: no-repeat;
+    mask:
+      radial-gradient(var(--notch) at top left,     #0000 98%, #000) top left,
+      radial-gradient(var(--notch) at top right,    #0000 98%, #000) top right,
+      radial-gradient(var(--notch) at bottom left,  #0000 98%, #000) bottom left,
+      radial-gradient(var(--notch) at bottom right, #0000 98%, #000) bottom right;
+    mask-size: 50% 50%;
+    mask-repeat: no-repeat;
   }
 
   .tagline {

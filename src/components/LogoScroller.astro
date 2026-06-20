@@ -47,7 +47,10 @@ const logos = [
     height: 30px;
     width: auto;
     flex-shrink: 0;
-    filter: grayscale(1) contrast(0) brightness(3) opacity(0.4);
+    /* Flatten logos to soft dark-grey silhouettes for the light background */
+    filter: grayscale(1) contrast(0) brightness(0.5) opacity(0.5);
+    /* Multiply so the silhouettes take on the warmth of the background */
+    mix-blend-mode: multiply;
   }
 
   .scroller-track img[src*="bluedot"],
