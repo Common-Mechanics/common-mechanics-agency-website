@@ -11,13 +11,13 @@
 
   .wordmark {
     display: inline-block;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-sans);
     font-size: var(--font-size-base);
     font-weight: 700;
     line-height: 1;
     color: var(--color-bg);          /* inverted: page colour as the text */
     background: var(--color-accent); /* orange badge */
-    letter-spacing: var(--tracking-wide);
+    letter-spacing: 0;
     padding: var(--space-2) var(--space-3);
     margin-bottom: var(--space-6);
 
@@ -30,20 +30,20 @@
       radial-gradient(var(--notch) at top right,    #0000 98%, #000) top right,
       radial-gradient(var(--notch) at bottom left,  #0000 98%, #000) bottom left,
       radial-gradient(var(--notch) at bottom right, #0000 98%, #000) bottom right;
-    -webkit-mask-size: 50% 50%;
+    -webkit-mask-size: 51% 51%;  /* >50% so quadrants overlap and hide the centre seam */
     -webkit-mask-repeat: no-repeat;
     mask:
       radial-gradient(var(--notch) at top left,     #0000 98%, #000) top left,
       radial-gradient(var(--notch) at top right,    #0000 98%, #000) top right,
       radial-gradient(var(--notch) at bottom left,  #0000 98%, #000) bottom left,
       radial-gradient(var(--notch) at bottom right, #0000 98%, #000) bottom right;
-    mask-size: 50% 50%;
+    mask-size: 51% 51%;  /* >50% so quadrants overlap and hide the centre seam */
     mask-repeat: no-repeat;
   }
 
   .tagline {
     font-family: 'DM Sans', sans-serif;
-    font-size: 3.375rem;
+    font-size: clamp(2rem, 7vw, 3.375rem);  /* shrinks smoothly below ~770px */
     font-weight: 300;
     letter-spacing: -0.02em;
     line-height: 1.1;

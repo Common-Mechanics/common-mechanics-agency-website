@@ -11,7 +11,8 @@
 <style>
   .about-body {
     font-family: var(--font-sans);
-    font-size: var(--font-size-xl);  /* 1.5rem — ~1.6x base; this is key copy */
+    /* Key copy — shrinks smoothly from xl to lg as the viewport narrows */
+    font-size: clamp(var(--font-size-lg), 3.2vw, var(--font-size-xl));
     color: var(--color-fg);
     max-width: 56ch;
     line-height: 1.5;

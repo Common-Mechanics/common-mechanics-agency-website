@@ -1,11 +1,38 @@
 <footer class="section footer-section">
-  <span class="footer-copy text-muted text-xs">
+  <span class="footer-copy text-xs">
     &copy; {new Date().getFullYear()} Common Mechanics
   </span>
 </footer>
 
 <style>
   .footer-section {
-    padding-bottom: var(--space-16);
+    padding-top: var(--space-4);      /* compact band */
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-16);   /* lift it off the bottom of the viewport */
+    background: var(--color-accent);  /* bold orange flair */
+    color: var(--color-bg);           /* off-white copy */
+
+    /* Concave corner scoops, like the wordmark badge, sized to roughly match
+       the section frame's corner cutouts. */
+    --notch: var(--frame-gap);
+    -webkit-mask:
+      radial-gradient(var(--notch) at top left,     #0000 98%, #000) top left,
+      radial-gradient(var(--notch) at top right,    #0000 98%, #000) top right,
+      radial-gradient(var(--notch) at bottom left,  #0000 98%, #000) bottom left,
+      radial-gradient(var(--notch) at bottom right, #0000 98%, #000) bottom right;
+    -webkit-mask-size: 51% 51%;  /* >50% so quadrants overlap and hide the centre seam */
+    -webkit-mask-repeat: no-repeat;
+    mask:
+      radial-gradient(var(--notch) at top left,     #0000 98%, #000) top left,
+      radial-gradient(var(--notch) at top right,    #0000 98%, #000) top right,
+      radial-gradient(var(--notch) at bottom left,  #0000 98%, #000) bottom left,
+      radial-gradient(var(--notch) at bottom right, #0000 98%, #000) bottom right;
+    mask-size: 51% 51%;  /* >50% so quadrants overlap and hide the centre seam */
+    mask-repeat: no-repeat;
+  }
+
+  /* Solid orange block — drop the architectural frame rails here */
+  .footer-section::before {
+    content: none;
   }
 </style>
