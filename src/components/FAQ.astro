@@ -6,8 +6,32 @@ interface QA {
 
 const faqs: QA[] = [
   {
-    question: "Where are you based?",
-    answer: "We're in the process of registering our legal entity. We will likely be based either in the UK or the US. We will be operating as a remote team, serving clients anywhere in the world. We will be happy to travel to you if an in-person consultation is needed, and can be compensated.",
+    question: "What sort of projects do you build?",
+    answer: "We build web-based digital products that advance AI safety and existential risk mitigation, empower people, and reduce AI-related harm. That includes marketing websites, community tools, campaign landing pages, and software platforms, from epistemic and governance tooling to technical safety tools. We work on both bespoke projects and ongoing platforms.",
+  },
+  {
+    question: "What is included in a website project?",
+    answer: "Everything, from early concept right through to launch. We also offer optional ongoing maintenance. Every website we deliver comes with an uptime guarantee, your own analytics access, strong performance across devices, and full tablet and mobile responsiveness. Everything you'd expect from a modern website.",
+  },
+  {
+    question: "What is your minimum engagement level?",
+    answer: "Our minimum for a design or product deliverable is £10,000. But if you have a smaller project, reach out anyway and we'll see how we can help.",
+  },
+  {
+    question: "How long does an engagement typically last?",
+    answer: "Bespoke products are usually 2–3 months. Platforms or community solutions run 3+ months, and can become indefinite if it makes sense.",
+  },
+  {
+    question: "How does website maintenance work and what does it cost?",
+    answer: "Exact terms are still being finalised, but it will likely be a monthly retainer with a clear service level agreement. You'll have a direct, high-speed line to our team. We aim to respond quickly during the working week, with an emergency line available 16 hours a day, 7 days a week. The goal is to make edits and maintenance so easy, fast, and affordable that you never have to touch the site yourself if you don't want to.",
+  },
+  {
+    question: "Do you work with clients who don't already have a visual identity?",
+    answer: "At least for now, we prefer clients who already have an established design system or only have lightweight needs. We are undecided about offering a full foundational branding and visual identity service, and right now we are not planning a comprehensive identity product.",
+  },
+  {
+    question: "How many clients do you take on?",
+    answer: "Initially, we partner with a small number of established clients running high-volume, demanding communications programs. This lets us integrate deeply with their mission and build large-scale, sophisticated campaigns. Over time, we plan to streamline our offering to also serve smaller, less-resourced organisations.",
   },
   {
     question: "How do you choose which cause areas to work in?",
@@ -18,32 +42,8 @@ const faqs: QA[] = [
     answer: "Clients usually know their space better than we do, so especially early on we'll defer to client priorities. Over time we'll grow a proactive agenda, spotting gaps no one else is coordinating and building what the field actually needs.",
   },
   {
-    question: "How long does an engagement typically last?",
-    answer: "Bespoke products are usually 2–3 months. Platforms or community solutions run 3+ months, and can become indefinite if it makes sense.",
-  },
-  {
-    question: "How many clients do you take on?",
-    answer: "Initially, we partner with a small number of established clients running high-volume, demanding communications programs. This lets us integrate deeply with their mission and build large-scale, sophisticated campaigns. Over time, we plan to streamline our offering to also serve smaller, less-resourced organisations.",
-  },
-  {
-    question: "What sort of projects do you build?",
-    answer: "We build web-based digital products that advance AI safety and existential risk mitigation, empower people, and reduce AI-related harm. That includes marketing websites, community tools, campaign landing pages, and software platforms, from epistemic and governance tooling to technical safety tools. We work on both bespoke projects and ongoing platforms.",
-  },
-  {
-    question: "What is included in a website project?",
-    answer: "Everything, from early concept right through to launch. We also offer optional ongoing maintenance. Every website we deliver comes with an uptime guarantee, your own analytics access, strong performance across devices, and full tablet and mobile responsiveness. Everything you'd expect from a modern website.",
-  },
-  {
-    question: "Do you work with clients who don't already have a visual identity?",
-    answer: "At least for now, we prefer clients who already have an established design system or only have lightweight needs. We are undecided about offering a full foundational branding and visual identity service, and right now we are not planning a comprehensive identity product.",
-  },
-  {
-    question: "What is your minimum engagement level?",
-    answer: "Our minimum for a design or product deliverable is £5,000. But if you have a smaller project, reach out anyway and we'll see how we can help.",
-  },
-  {
-    question: "How does website maintenance work and what does it cost?",
-    answer: "Exact terms are still being finalised, but it will likely be a monthly retainer with a clear service level agreement. You'll have a direct, high-speed line to our team. We aim to respond quickly during the working week, with an emergency line available 16 hours a day, 7 days a week. The goal is to make edits and maintenance so easy, fast, and affordable that you never have to touch the site yourself if you don't want to.",
+    question: "Where are you based?",
+    answer: "We will be operating as a remote team, serving clients anywhere in the world. We will be happy to travel to you if an in-person consultation is needed, and can be compensated.",
   },
 ];
 ---
@@ -78,6 +78,24 @@ const faqs: QA[] = [
 
   .faq-item:last-child {
     border-bottom: 1px solid var(--color-accent-line);
+  }
+
+  /* Animate the disclosure open/close. interpolate-size lets us
+     transition to/from the intrinsic `auto` height. */
+  details {
+    interpolate-size: allow-keywords;
+  }
+
+  details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size var(--duration-fast) var(--ease-out),
+                content-visibility var(--duration-fast) var(--ease-out);
+    transition-behavior: allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
   }
 
   /* Whole header row is the click target */
