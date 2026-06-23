@@ -2,6 +2,7 @@
 :root {
   /* Typography */
   --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-sans: 'DM Sans', system-ui, sans-serif;  /* body/description copy */
   --font-size-xs:   0.6875rem;  /* 11px */
   --font-size-sm:   0.8125rem;  /* 13px */
   --font-size-base: 0.9375rem;  /* 15px */
@@ -10,11 +11,17 @@
   --font-size-2xl:  2rem;       /* 32px */
 
   /* Color */
-  --color-bg:          #0d0d0d;
-  --color-fg:          #e2e2e2;
-  --color-muted:       #505050;
-  --color-subtle:      #222222;
-  --color-accent-line: rgba(226, 226, 226, 0.07);
+  --color-bg:          #faf7f1;  /* barely off-white, warm yellow/orange cast */
+  --color-fg:          #2d3339;  /* primary — dark slate grey */
+  --color-muted:       #8a8073;  /* warm medium grey — meta/secondary text */
+  --color-subtle:      #d8d0c2;  /* warm light grey — preview/modal borders */
+  --color-accent:      #e2580e;  /* secondary — bright industrial orange */
+  --color-accent-line: rgba(74, 63, 48, 0.14);   /* faint warm grey — internal dividers */
+  --color-rule:        rgba(74, 63, 48, 0.30);    /* faint warm grey — architectural frame hairline */
+
+  /* Technical-drawing frame */
+  --frame-gap: 12px;  /* how far each hairline stops short of the corners */
+  --frame-dot: 2px;   /* dotted-line dash + gap size */
 
   /* Spacing (4px base) */
   --space-1:  0.25rem;
@@ -64,9 +71,6 @@ body {
   min-height: 100dvh;
   padding: 0 var(--page-padding);
   -webkit-font-smoothing: antialiased;
-  /* Faint dot-grid texture */
-  background-image: radial-gradient(circle, rgba(226, 226, 226, 0.09) 1px, transparent 1px);
-  background-size: 28px 28px;
 }
 
 /* ─── Links ──────────────────────────────────────── */
@@ -88,19 +92,40 @@ a:hover {
   z-index: 1;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: var(--space-16) 0;
+  padding: var(--space-16) clamp(var(--space-6), 4vw, var(--space-12));
 }
 
-.section + .section {
-  border-top: 1px solid var(--color-accent-line);
+/* Architectural frame: dotted hairlines on one pseudo-element (no extra DOM).
+   Each line stops --frame-gap short of the corners, so they never quite meet.
+   Left + right rails are always drawn; top/bottom are opted in per section via
+   `data-rule` so only one section owns each shared edge (no doubled lines).
+   The dotted line is sized to (100% - 2*gap) and centered, which is what
+   insets it from the corners; the repeating-gradient supplies the dots. */
+.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --dot-h: repeating-linear-gradient(to right,  var(--color-rule) 0 var(--frame-dot), transparent var(--frame-dot) calc(var(--frame-dot) * 2));
+  --dot-v: repeating-linear-gradient(to bottom, var(--color-rule) 0 var(--frame-dot), transparent var(--frame-dot) calc(var(--frame-dot) * 2));
+  --line-top: linear-gradient(transparent 0 0);     /* off unless opted in */
+  --line-bottom: linear-gradient(transparent 0 0);
+  background:
+    var(--line-top)    center top    / calc(100% - 2 * var(--frame-gap)) 1px no-repeat,
+    var(--line-bottom) center bottom / calc(100% - 2 * var(--frame-gap)) 1px no-repeat,
+    var(--dot-v)       left   center / 1px calc(100% - 2 * var(--frame-gap)) no-repeat,
+    var(--dot-v)       right  center / 1px calc(100% - 2 * var(--frame-gap)) no-repeat;
 }
+
+.section[data-rule~="top"]::before    { --line-top: var(--dot-h); }
+.section[data-rule~="bottom"]::before { --line-bottom: var(--dot-h); }
 
 /* ─── Section label ──────────────────────────────── */
 .section-label {
   display: block;
   font-size: var(--font-size-xs);
   letter-spacing: var(--tracking-wider);
-  color: var(--color-muted);
+  color: var(--color-accent);
   text-transform: uppercase;
   margin-bottom: var(--space-8);
 }

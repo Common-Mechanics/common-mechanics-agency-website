@@ -1,0 +1,71 @@
+---
+interface Service {
+  name: string;
+  desc: string;
+}
+
+const services: Service[] = [
+  {
+    name: 'Websites & web products',
+    desc: 'We design and engineer the whole thing, from spec to launch and beyond. Marketing sites, web apps, and data visualisations, with maintenance if you want it.',
+  },
+  {
+    name: 'Design & engineering reviews',
+    desc: 'An expert critique of your design, or a review of your product, codebase, or build plan, before or after launch.',
+  },
+  {
+    name: 'Infrastructure products',
+    desc: 'When we spot a problem shared across high-impact organisations, we occasionally build a product to solve it and make it available under licence.',
+  },
+  {
+    name: 'Hiring support',
+    desc: 'Tap our rigorously vetted pipeline of design and engineering talent to fill a role or staff a project.',
+  },
+];
+---
+
+<section class="section" data-rule="top bottom">
+  <span class="section-label">Services</span>
+  <ul class="services-list">
+    {services.map((service) => (
+      <li class="service-item">
+        <h3 class="service-name">{service.name}</h3>
+        <p class="service-desc">{service.desc}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .services-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12) var(--space-8);
+  }
+
+  .service-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .service-name {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-fg);
+  }
+
+  .service-desc {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    color: var(--color-fg);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 640px) {
+    .services-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

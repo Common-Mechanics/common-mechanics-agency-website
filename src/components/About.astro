@@ -1,4 +1,4 @@
-<section class="section">
+<section class="section" data-rule="bottom">
   <span class="section-label">About</span>
   <p class="about-body">
     We're a design-build studio, crafting design systems and digital products for the world's
@@ -10,10 +10,12 @@
 
 <style>
   .about-body {
-    font-size: var(--font-size-base);
+    font-family: var(--font-sans);
+    /* Key copy — shrinks smoothly from xl to lg as the viewport narrows */
+    font-size: clamp(var(--font-size-lg), 3.2vw, var(--font-size-xl));
     color: var(--color-fg);
     max-width: 56ch;
-    line-height: 1.75;
+    line-height: 1.5;
     margin-bottom: var(--space-4);
   }
 

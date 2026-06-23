@@ -1,0 +1,155 @@
+---
+interface QA {
+  question: string;
+  answer: string;
+}
+
+const faqs: QA[] = [
+  {
+    question: "What sort of projects do you build?",
+    answer: "We build web-based digital products that advance AI safety and existential risk mitigation, empower people, and reduce AI-related harm. That includes marketing websites, community tools, campaign landing pages, and software platforms, from epistemic and governance tooling to technical safety tools. We work on both bespoke projects and ongoing platforms.",
+  },
+  {
+    question: "What is included in a website project?",
+    answer: "Everything, from early concept right through to launch. We also offer optional ongoing maintenance. Every website we deliver comes with an uptime guarantee, your own analytics access, strong performance across devices, and full tablet and mobile responsiveness. Everything you'd expect from a modern website.",
+  },
+  {
+    question: "What is your minimum engagement level?",
+    answer: "Our minimum for a design or product deliverable is £10,000. But if you have a smaller project, reach out anyway and we'll see how we can help.",
+  },
+  {
+    question: "How long does an engagement typically last?",
+    answer: "Bespoke products are usually 2–3 months. Platforms or community solutions run 3+ months, and can become indefinite if it makes sense.",
+  },
+  {
+    question: "How does website maintenance work and what does it cost?",
+    answer: "Exact terms are still being finalised, but it will likely be a monthly retainer with a clear service level agreement. You'll have a direct, high-speed line to our team. We aim to respond quickly during the working week, with an emergency line available 16 hours a day, 7 days a week. The goal is to make edits and maintenance so easy, fast, and affordable that you never have to touch the site yourself if you don't want to.",
+  },
+  {
+    question: "Do you work with clients who don't already have a visual identity?",
+    answer: "At least for now, we prefer clients who already have an established design system or only have lightweight needs. We are undecided about offering a full foundational branding and visual identity service, and right now we are not planning a comprehensive identity product.",
+  },
+  {
+    question: "How many clients do you take on?",
+    answer: "Initially, we partner with a small number of established clients running high-volume, demanding communications programs. This lets us integrate deeply with their mission and build large-scale, sophisticated campaigns. Over time, we plan to streamline our offering to also serve smaller, less-resourced organisations.",
+  },
+  {
+    question: "How do you choose which cause areas to work in?",
+    answer: "We focus mainly on AI safety, not as a permanent rule, but because it looks like where we can have the most impact right now. We use a simple framework (Importance, Neglectedness, Tractability) and mix that with quick heuristics. If a project in another area comes along with outsized impact potential, we'll go for it. We also lean toward infrastructure, platforms, and reusable tools rather than one-off deliverables.",
+  },
+  {
+    question: "How much of your work is client-driven versus self-initiated?",
+    answer: "Clients usually know their space better than we do, so especially early on we'll defer to client priorities. Over time we'll grow a proactive agenda, spotting gaps no one else is coordinating and building what the field actually needs.",
+  },
+  {
+    question: "Where are you based?",
+    answer: "We will be operating as a remote team, serving clients anywhere in the world. We will be happy to travel to you if an in-person consultation is needed, and can be compensated.",
+  },
+];
+---
+
+<section class="section">
+  <span class="section-label">FAQ</span>
+  <ul class="faq-list">
+    {faqs.map((faq) => (
+      <li class="faq-item">
+        <details>
+          <summary class="faq-summary">
+            <span class="faq-question">{faq.question}</span>
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M9 5l8 7-8 7z" />
+            </svg>
+          </summary>
+          <p class="faq-answer">{faq.answer}</p>
+        </details>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .faq-list {
+    list-style: none;
+  }
+
+  .faq-item {
+    border-top: 1px solid var(--color-accent-line);
+  }
+
+  .faq-item:last-child {
+    border-bottom: 1px solid var(--color-accent-line);
+  }
+
+  /* Animate the disclosure open/close. interpolate-size lets us
+     transition to/from the intrinsic `auto` height. */
+  details {
+    interpolate-size: allow-keywords;
+  }
+
+  details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size var(--duration-fast) var(--ease-out),
+                content-visibility var(--duration-fast) var(--ease-out);
+    transition-behavior: allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+
+  /* Whole header row is the click target */
+  .faq-summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-3);
+    color: var(--color-fg);
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  /* Remove the native disclosure marker */
+  .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-summary::marker {
+    content: '';
+  }
+
+  .faq-summary:hover {
+    background-color: rgba(74, 63, 48, 0.05);
+  }
+
+  .faq-question {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+  }
+
+  .faq-icon {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    color: var(--color-muted);
+    transition: transform var(--duration-base) var(--ease-out),
+                color var(--duration-fast) var(--ease-out);
+  }
+
+  .faq-summary:hover .faq-icon {
+    color: var(--color-fg);
+  }
+
+  details[open] .faq-icon {
+    transform: rotate(90deg);
+  }
+
+  .faq-answer {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    color: var(--color-fg);
+    line-height: 1.7;
+    padding: 0 var(--space-3) var(--space-6);
+  }
+</style>
