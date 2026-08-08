@@ -1,6 +1,9 @@
 <footer class="section footer-section">
   <span class="footer-copy text-xs">
-    &copy; {new Date().getFullYear()} Common Mechanics
+    &copy; {new Date().getFullYear()} Common Mechanics Ltd &middot; UK Company Number 17385700
+  </span>
+  <span class="footer-address text-xs">
+    71&ndash;75 Shelton Street, London, WC2H 9JQ
   </span>
 </footer>
 
@@ -29,6 +32,16 @@
       radial-gradient(var(--notch) at bottom right, #0000 98%, #000) bottom right;
     mask-size: 51% 51%;  /* >50% so quadrants overlap and hide the centre seam */
     mask-repeat: no-repeat;
+  }
+
+  /* Stack the legal line above the registered address */
+  .footer-copy,
+  .footer-address {
+    display: block;
+  }
+
+  .footer-address {
+    opacity: 0.8;
   }
 
   /* Solid orange block — drop the architectural frame rails here */
