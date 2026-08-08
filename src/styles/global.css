@@ -47,6 +47,8 @@
   /* Transitions */
   --duration-fast: 100ms;
   --duration-base: 200ms;
+  --duration-enter: 700ms;  /* on-load fade-up */
+  --stagger-step: 90ms;     /* gap between consecutive fade-ups */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -128,6 +130,30 @@ a:hover {
   color: var(--color-accent);
   text-transform: uppercase;
   margin-bottom: var(--space-8);
+}
+
+/* ─── Entrance animation ─────────────────────────── */
+/* Opt in per element with [data-animate]; `--stagger` is its position in the
+   top-to-bottom sequence. Applied to content only — the section frame rails
+   (.section::before) are deliberately left static.
+   `backwards` fill holds the hidden start state during the delay, so nothing
+   flashes in before its turn. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-animate] {
+    animation: fade-up var(--duration-enter) var(--ease-out) backwards;
+    animation-delay: calc(var(--stagger, 0) * var(--stagger-step));
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ─── Utilities ──────────────────────────────────── */
