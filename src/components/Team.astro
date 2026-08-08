@@ -1,38 +1,60 @@
+---
+interface Member {
+  name: string;
+  email: string;
+  linkedin: string;
+  location: string;
+}
+
+const members: Member[] = [
+  {
+    name: 'Taylor Jones',
+    email: 'taylor@commonmechanics.io',
+    linkedin: 'https://www.linkedin.com/in/tjonesdesigner/',
+    location: 'London, UK',
+  },
+  {
+    name: 'Alexander Haase',
+    email: 'alex@commonmechanics.io',
+    linkedin: 'https://www.linkedin.com/in/herrhaase/?locale=en',
+    location: 'Berlin, DE',
+  },
+  {
+    name: 'Max Werner',
+    email: 'max@commonmechanics.io',
+    linkedin: 'https://www.linkedin.com/in/max-werner-cs/',
+    location: 'Braunschweig, DE',
+  },
+];
+---
+
 <section class="section" data-rule="bottom">
   <span class="section-label">Team</span>
   <ul class="team-list">
-    <li class="team-item">
-      <span class="team-name">
-        Taylor Jones
-        <a href="https://www.linkedin.com/in/tjonesdesigner/" target="_blank" rel="noopener noreferrer" class="linkedin-link" aria-label="Taylor Jones on LinkedIn">
-          <svg class="linkedin-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </a>
-      </span>
-      <span class="team-meta">
-        <span class="text-muted text-xs">London, UK</span>
-        <a
-          href="mailto:taylor@commonmechanics.io"
-          class="text-xs"
-          aria-label="Email Taylor Jones"
-        >taylor@commonmechanics.io</a>
-      </span>
-    </li>
-    <li class="team-item">
-      <span class="team-name">
-        Alexander Haase
-        <a href="https://www.linkedin.com/in/herrhaase/?locale=en" target="_blank" rel="noopener noreferrer" class="linkedin-link" aria-label="Alexander Haase on LinkedIn">
-          <svg class="linkedin-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </a>
-      </span>
-      <span class="team-meta">
-        <span class="text-muted text-xs">Berlin, DE</span>
-        <a
-          href="mailto:alex@commonmechanics.io"
-          class="text-xs"
-          aria-label="Email Alexander Haase"
-        >alex@commonmechanics.io</a>
-      </span>
-    </li>
+    {members.map((member) => (
+      <li class="team-item">
+        <span class="team-name">
+          {member.name}
+          <a
+            href={member.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="linkedin-link"
+            aria-label={`${member.name} on LinkedIn`}
+          >
+            <svg class="linkedin-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+        </span>
+        <span class="team-meta">
+          <span class="text-muted text-xs">{member.location}</span>
+          <a
+            href={`mailto:${member.email}`}
+            class="text-xs"
+            aria-label={`Email ${member.name}`}
+          >{member.email}</a>
+        </span>
+      </li>
+    ))}
   </ul>
 </section>
 
