@@ -83,6 +83,10 @@ binding and `wrangler deploy` fails trying to recreate the namespace. Don't remo
 
 ## Notes
 
-- `src/pages/fonts.astro` is an internal typeface comparison page, not part of the site.
+- Webfonts are **self-hosted** via Fontsource, imported in `src/layouts/Base.astro`'s
+  frontmatter (DM Sans variable + IBM Plex Mono 400/500, latin & latin-ext). Nothing may
+  reach `fonts.googleapis.com` / `fonts.gstatic.com` — that was a GDPR third-party
+  transfer. Note the variable package registers the family as `'DM Sans Variable'`,
+  which is why `--font-sans` lists that name first.
 - `src/components/IntelligenceCanvas.astro` (seeded-PRNG background canvas) is currently
   unused — it is not imported by `index.astro`.

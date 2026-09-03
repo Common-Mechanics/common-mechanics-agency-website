@@ -1,9 +1,21 @@
 <footer class="section footer-section">
   <span class="footer-copy text-xs">
-    &copy; {new Date().getFullYear()} Common Mechanics Ltd &middot; UK Company Number 17385700
+    &copy; {new Date().getFullYear()} Common Mechanics Ltd &middot; Registered in England and Wales &middot; Company No. 17385700
   </span>
   <span class="footer-address text-xs">
-    71&ndash;75 Shelton Street, London, WC2H 9JQ
+    Registered office: 71&ndash;75 Shelton Street, London, WC2H 9JQ
+  </span>
+  {/*
+    VAT number pending. Once HMRC issues it, uncomment the line below and fill it in —
+    displaying it becomes mandatory under the Electronic Commerce (EC Directive)
+    Regulations 2002, reg. 6, from the moment the company is VAT-registered.
+
+    <span class="footer-address text-xs">VAT Registration No. GB000000000</span>
+  */}
+  <span class="footer-contact text-xs">
+    <a href="mailto:privacy@commonmechanics.io">privacy@commonmechanics.io</a>
+    <span aria-hidden="true">&middot;</span>
+    <a href="/privacy">Privacy notice</a>
   </span>
 </footer>
 
@@ -34,14 +46,42 @@
     mask-repeat: no-repeat;
   }
 
-  /* Stack the legal line above the registered address */
+  /* Stack the legal line, the registered address and the contact row */
   .footer-copy,
-  .footer-address {
+  .footer-address,
+  .footer-contact {
     display: block;
   }
 
   .footer-address {
     opacity: 0.8;
+  }
+
+  /* Statutory contact route (E-Commerce Regs 2002, reg. 6) and the privacy
+     notice required by UK GDPR Art. 13. Kept at full opacity — these have to
+     stay findable, so they don't get the address line's softening. */
+  .footer-contact {
+    margin-top: var(--space-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-2);
+  }
+
+  /* The global link rule underlines in --color-muted, which is near-invisible
+     on the orange band; carry the footer's own colour instead. */
+  .footer-contact a {
+    color: inherit;
+    text-decoration-color: currentColor;
+  }
+
+  .footer-contact a:hover,
+  .footer-contact a:focus-visible {
+    text-decoration-thickness: 2px;
+  }
+
+  .footer-contact a:focus-visible {
+    outline: 2px solid var(--color-bg);
+    outline-offset: 3px;
   }
 
   /* Solid orange block — drop the architectural frame rails here */

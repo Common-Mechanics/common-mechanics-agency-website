@@ -1,4 +1,13 @@
 ---
+// Self-hosted webfonts (Fontsource) — no third-party requests to Google's CDN.
+// DM Sans: variable weight axis (registers the family as "DM Sans Variable"),
+// covers the 300 / 400 / 700 the site uses. IBM Plex Mono: only the 400 and 500
+// static weights in use, latin + latin-ext subsets.
+import '@fontsource-variable/dm-sans';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-ext-400.css';
+import '@fontsource/ibm-plex-mono/latin-500.css';
+import '@fontsource/ibm-plex-mono/latin-ext-500.css';
 import '../styles/global.css';
 
 interface Props {
@@ -19,14 +28,6 @@ const {
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
-    <!-- IBM Plex Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,700&display=swap"
-      rel="stylesheet"
-    />
   </head>
   <body>
     <slot />

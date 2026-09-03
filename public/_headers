@@ -1,0 +1,38 @@
+# Security headers for the Cloudflare Workers deployment.
+#
+# netlify.toml carries a similar (shorter) set, but Netlify is only the fallback
+# host — production deploys to Cloudflare Workers via wrangler, which does not
+# read that file. Workers Static Assets reads this one, the same way Pages does.
+# Because the build is fully static, every response is an asset response, so
+# these apply site-wide.
+#
+# Relevant to UK GDPR Art. 32 (appropriate technical measures).
+
+/*
+  # Clickjacking. frame-ancestors below is the modern control; this covers
+  # older browsers that ignore CSP.
+  X-Frame-Options: DENY
+
+  # Stop browsers second-guessing declared Content-Types.
+  X-Content-Type-Options: nosniff
+
+  # Send the origin cross-site, the full path same-site, and nothing at all when
+  # downgrading to HTTP. Keeps visited URLs out of third-party referer logs.
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # This site needs none of these APIs; deny them outright.
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=(), interest-cohort=()
+
+  # One year. `preload` is deliberately omitted — submitting to the preload list
+  # is difficult to reverse. Add it only once you're certain every current and
+  # future subdomain will be HTTPS-only.
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+  # Everything is same-origin: fonts are self-hosted, scripts and styles are
+  # bundled by Astro, images ship with the site. There are no third-party
+  # origins left to allow.
+  #
+  # 'unsafe-inline' in style-src is required only by the inline
+  # style="--stagger: N" attributes on the entrance-animation elements. Move
+  # those to classes and it can be dropped.
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests

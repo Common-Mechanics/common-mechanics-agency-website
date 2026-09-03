@@ -7,7 +7,13 @@
 		"directory": "./dist",
 		"binding": "ASSETS"
 	},
+	// Disabled deliberately: this is a static marketing site with no server-side
+	// logic to debug, and Workers observability retains request logs (including
+	// client IPs) in Cloudflare's pipeline. Leaving it off is data minimisation
+	// under UK GDPR Art. 5(1)(c) — it removes the processing rather than
+	// documenting it. Re-enable only alongside a retention period and a
+	// corresponding line in /privacy.
 	"observability": {
-		"enabled": true
+		"enabled": false
 	}
 }
