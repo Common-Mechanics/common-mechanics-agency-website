@@ -24,8 +24,8 @@ const services: Service[] = [
 ];
 ---
 
-<section class="section" data-rule="top bottom">
-  <span class="section-label">Services</span>
+<section class="section" data-rule="top bottom" aria-labelledby="services-label">
+  <h2 class="section-label" id="services-label">Services</h2>
   <ul class="services-list">
     {services.map((service) => (
       <li class="service-item">

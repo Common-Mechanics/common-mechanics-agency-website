@@ -65,6 +65,9 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0 var(--space-2);
+    /* See the note in Team.astro: enlarged browser text must break rather
+       than widen the page. */
+    overflow-wrap: anywhere;
   }
 
   /* The global link rule underlines in --color-muted, which is near-invisible

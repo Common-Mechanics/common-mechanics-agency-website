@@ -17,8 +17,41 @@ from layout boxes, and third-party origins captured from a network trace of a co
 
 ## Remediation status — updated 3 September 2026
 
-**All Part B (GDPR) findings have been addressed.** Part A (accessibility) is untouched and
-still outstanding.
+**All Part B (GDPR) findings have been addressed. Part A is now addressed too, with one
+exception: A5, the five failing colour pairs.** Fixing A5 means changing the accent orange
+and the muted grey, which is the one change on this list that alters the visual design, so
+it is being held for a deliberate decision rather than shipped with the rest. Everything
+else in Part A was implemented under a hard constraint of no visual change, and verified
+that way: the built pages are pixel-identical to the previous build at 320 / 390 / 768 /
+1280 px, on both routes.
+
+### Part A
+
+| Ref | Status | Where |
+|---|---|---|
+| A1 Scroller never stops | **Fixed** — `prefers-reduced-motion` guard, pointer pause, and a pause/resume control that is `.sr-only` until focused; under reduced motion the track wraps to a static grid so no logo is stranded | `src/components/LogoScroller.astro` |
+| A2 No `<main>`, no `<h2>` | **Fixed** — `<main>` added, all five `.section-label`s are `<h2>` with `aria-labelledby` on their section. `<main>` 0→1, `<h2>` 0→5, unnamed sections 5→0, axe `region` 45 nodes→0, the `h1→h3` skip is gone | `src/pages/index.astro`, the five section components, `src/styles/global.css` |
+| A3 Modal in name only | **Fixed** — rebuilt on native `<dialog>` + `showModal()`. Verified under iPhone emulation: `:modal` true, per-project accessible name, focus moved in, `Esc` closes, focus restored to the opening link, plus a visible close button (84×50) | `src/components/HoverPreview.astro` |
+| A4 Links unfollowable on touch | **Fixed** — interception gated on `(hover: none) and (pointer: coarse)`. Verified that a coarse-pointer-but-hover-capable profile follows the link and still gets the hover preview | `src/components/HoverPreview.astro` |
+| A5 Five failing colour pairs | **Open — needs a design decision.** The only fix changes the look of the site. The diff is two token values and one deleted line, written out under A5 below. This is the last axe violation on the page (4 nodes) | `src/styles/global.css:14–18`, `src/components/Footer.astro` |
+| A6 12×12 targets | **Fixed** — LinkedIn links 12×12→24×24, email links 18px→24px tall, both via padding cancelled by an equal negative margin so no glyph moves | `src/components/Team.astro` |
+| A7 `font-size: 16px` | **Fixed** — `100%`. A 24px browser default now yields a 24px root (it did nothing before). This also exposed a latent overflow at 320px, fixed with `overflow-wrap: anywhere` on the addresses | `src/styles/global.css`, `Team.astro`, `Footer.astro` |
+| A8 No focus styling | **Fixed** — global `:focus-visible` ring in the accent (2px, clears 1.4.11's 3:1), and the portfolio underline, FAQ row highlight and LinkedIn colour shift are all mirrored onto `:focus-visible` | `src/styles/global.css` and components |
+| A9 FAQ headings, unguarded motion | **Fixed** — questions are `<h3>` (inside the `<summary>`, wrapping the icon, so the content model stays valid); the `::details-content` and modal animations moved under `prefers-reduced-motion: no-preference` | `src/components/FAQ.astro`, `HoverPreview.astro` |
+| A10 Two `<img src="">` | **Fixed** — attribute omitted, set on first use. 2→0 in the built page | `src/components/HoverPreview.astro` |
+| A11 New-tab links | **Fixed** — all 17 `target="_blank"` links now say so in their accessible name | `PortfolioItem.astro`, `Team.astro`, `HoverPreview.astro` |
+| A12 Preview is mouse-only | **Fixed** — shown on `:focus-visible`, anchored beside the link rather than over it, dismissable with `Esc` per 1.4.13. Suppressed entirely when neither side has room | `src/components/HoverPreview.astro` |
+| A13 Scroller has no label | **Fixed** — `role="group"` + "Organisations our team has worked with"; the duplicated set drops its `alt` | `src/components/LogoScroller.astro` |
+| A14 Three one-liners | **Fixed** — `lang="en-GB"`, the LinkedIn `<svg>` is `aria-hidden focusable="false"`, the "↗" is wrapped `aria-hidden` | `Base.astro`, `Team.astro`, `HoverPreview.astro` |
+| A15 Reflow | **Was over-stated; now actually true.** The document-level `scrollWidth === clientWidth` check missed that at 320px the team email addresses overflowed their section and were clipped at the viewport edge — the overflow sat inside the body's padding gutter, so the page never gained a scrollbar. Fixed alongside A7; the team block at 320px is the one place the rendering deliberately differs from the previous build | `src/components/Team.astro` |
+
+The same axe run (4.13.0, WCAG 2.0/2.1/2.2 A+AA + best-practice) over the finished page
+reports **one** rule violated — A5's `color-contrast`, 4 nodes — where over the previous
+build it reported four: `color-contrast`, `heading-order`, `landmark-one-main` and
+`region` (45 nodes). The caveat below still applies: the true contrast count is five
+colour pairs, not four nodes.
+
+### Part B
 
 | Ref | Status | Where |
 |---|---|---|
@@ -32,10 +65,10 @@ still outstanding.
 | G8 Cookieless position | **Documented** — written policy on what analytics may be added | `docs/data-protection.md` §3 |
 | G9 Staff data | **Documented** — internal notice + 30-day leavers removal | `docs/staff-privacy-notice.md` |
 | G10 ICO fee | **Open action** — self-assessment still to run | `docs/data-protection.md` §4 |
-| G11 Equality Act | **Outstanding** — depends on the Part A accessibility work below | — |
+| G11 Equality Act | **Nearly closed** — the Part A work is done bar A5; the site's remaining WCAG 2.2 AA gap is the contrast decision | — |
 
 Ten open actions remain, all of them facts we don't have yet rather than code: see
-`docs/data-protection.md` §4.
+`docs/data-protection.md` §4. G11 now turns solely on A5.
 
 ---
 

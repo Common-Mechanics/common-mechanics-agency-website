@@ -48,17 +48,19 @@ const faqs: QA[] = [
 ];
 ---
 
-<section class="section">
-  <span class="section-label">FAQ</span>
+<section class="section" aria-labelledby="faq-label">
+  <h2 class="section-label" id="faq-label">FAQ</h2>
   <ul class="faq-list">
     {faqs.map((faq) => (
       <li class="faq-item">
         <details>
           <summary class="faq-summary">
-            <span class="faq-question">{faq.question}</span>
-            <svg class="faq-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M9 5l8 7-8 7z" />
-            </svg>
+            <h3 class="faq-question">
+              <span>{faq.question}</span>
+              <svg class="faq-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M9 5l8 7-8 7z" />
+              </svg>
+            </h3>
           </summary>
           <p class="faq-answer">{faq.answer}</p>
         </details>
@@ -89,13 +91,25 @@ const faqs: QA[] = [
   details::details-content {
     block-size: 0;
     overflow: hidden;
-    transition: block-size var(--duration-fast) var(--ease-out),
-                content-visibility var(--duration-fast) var(--ease-out);
-    transition-behavior: allow-discrete;
   }
 
   details[open]::details-content {
     block-size: auto;
+  }
+
+  /* The open/close motion is opt-in, like the page entrance animation.
+     Without it the panel still opens — it just snaps rather than eases. */
+  @media (prefers-reduced-motion: no-preference) {
+    details::details-content {
+      transition: block-size var(--duration-fast) var(--ease-out),
+                  content-visibility var(--duration-fast) var(--ease-out);
+      transition-behavior: allow-discrete;
+    }
+
+    .faq-icon {
+      transition: transform var(--duration-base) var(--ease-out),
+                  color var(--duration-fast) var(--ease-out);
+    }
   }
 
   /* Whole header row is the click target */
@@ -119,13 +133,24 @@ const faqs: QA[] = [
     content: '';
   }
 
-  .faq-summary:hover {
+  .faq-summary:hover,
+  .faq-summary:focus-visible {
     background-color: rgba(74, 63, 48, 0.05);
   }
 
+  /* An <h3> inside the <summary>. <summary> takes phrasing content or a single
+     heading element, so the heading — not the summary — carries the row layout,
+     with the icon inside it. Explicit size and weight hold it to the same box
+     the previous <span> produced. */
   .faq-question {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
     font-size: var(--font-size-base);
     font-weight: 500;
+    line-height: inherit;
   }
 
   .faq-icon {
@@ -133,11 +158,10 @@ const faqs: QA[] = [
     height: 10px;
     flex-shrink: 0;
     color: var(--color-muted);
-    transition: transform var(--duration-base) var(--ease-out),
-                color var(--duration-fast) var(--ease-out);
   }
 
-  .faq-summary:hover .faq-icon {
+  .faq-summary:hover .faq-icon,
+  .faq-summary:focus-visible .faq-icon {
     color: var(--color-fg);
   }
 

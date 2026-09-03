@@ -1,21 +1,40 @@
-<!-- Desktop hover preview -->
+<!--
+  Two preview surfaces, rendered once per page and bound with delegated
+  listeners for anything carrying `data-preview`.
+
+  No `src` attribute on either image: an empty `src=""` resolves against the
+  document URL, so browsers fetch the HTML page a second time as an image on
+  every load. It is set on first use instead.
+-->
+
+<!-- Pointer preview: follows the cursor on hover, anchors beside the link on
+     keyboard focus. Decorative — the link text already names the project. -->
 <div id="hover-preview" aria-hidden="true">
-  <img id="hover-preview-img" src="" alt="" width="260" height="163" />
+  <img id="hover-preview-img" alt="" width="260" height="163" />
 </div>
 
-<!-- Mobile tap modal -->
-<div id="mobile-modal" aria-hidden="true" role="dialog" aria-modal="true">
-  <div id="mobile-modal-backdrop"></div>
-  <div id="mobile-modal-card">
-    <img id="mobile-modal-img" src="" alt="" />
-    <a id="mobile-modal-link" href="#" target="_blank" rel="noopener noreferrer">
-      Visit website ↗
-    </a>
+<!-- Touch preview. A native <dialog> opened with showModal(), which supplies
+     focus move-in, focus trapping, focus restore, Esc-to-close, background
+     inerting and top-layer stacking — none of which a role="dialog" div does.
+     Its accessible name is set per project when it opens. -->
+<dialog id="preview-dialog" class="preview-dialog">
+  <img id="preview-dialog-img" class="preview-dialog-img" alt="" />
+  <div class="preview-dialog-actions">
+    <a
+      id="preview-dialog-link"
+      class="preview-dialog-action"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+    >Visit website <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+    <button id="preview-dialog-close" class="preview-dialog-action" type="button" autofocus>
+      Close
+    </button>
   </div>
-</div>
+</dialog>
 
 <style>
-  /* ── Desktop hover preview ── */
+  /* ── Pointer preview ── */
   #hover-preview {
     position: fixed;
     top: 0;
@@ -43,37 +62,26 @@
     object-position: top center;
   }
 
-  /* ── Mobile modal ── */
-  #mobile-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-  }
-
-  #mobile-modal.open {
-    display: block;
-  }
-
-  #mobile-modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    animation: fade-in 160ms ease both;
-  }
-
-  #mobile-modal-card {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  /* ── Touch dialog ── */
+  /* Overrides the UA dialog defaults (border, padding, max-width, system
+     colours) back to the previous card's box; `margin: auto` on a modal
+     dialog centres it the way the old translate(-50%, -50%) did. */
+  .preview-dialog {
     width: 80%;
+    max-width: none;
+    max-height: none;
+    margin: auto;
+    padding: 0;
     background: var(--color-bg);
+    color: var(--color-fg);
     border: 1px solid var(--color-subtle);
-    animation: fade-scale-in 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  #mobile-modal-img {
+  .preview-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .preview-dialog-img {
     display: block;
     width: 100%;
     aspect-ratio: 16 / 10;
@@ -81,19 +89,41 @@
     object-position: top center;
   }
 
-  #mobile-modal-link {
-    display: block;
-    padding: var(--space-4) var(--space-6);
+  .preview-dialog-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--color-accent-line);
+  }
+
+  .preview-dialog-action {
+    font-family: var(--font-mono);
     font-size: var(--font-size-xs);
     letter-spacing: var(--tracking-wide);
+    line-height: inherit;
+    padding: var(--space-4) var(--space-6);
     color: var(--color-muted);
+    background: none;
+    border: 0;
     text-decoration: none;
-    border-top: 1px solid var(--color-accent-line);
+    cursor: pointer;
     transition: color 100ms ease;
   }
 
-  #mobile-modal-link:hover {
+  .preview-dialog-action:hover,
+  .preview-dialog-action:focus-visible {
     color: var(--color-fg);
+  }
+
+  /* Like the page entrance animation, the open transition is opt-in. */
+  @media (prefers-reduced-motion: no-preference) {
+    .preview-dialog[open] {
+      animation: fade-scale-in 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .preview-dialog[open]::backdrop {
+      animation: fade-in 160ms ease both;
+    }
   }
 
   @keyframes fade-in {
@@ -102,27 +132,50 @@
   }
 
   @keyframes fade-scale-in {
-    from { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
-    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: none; }
   }
 </style>
 
 <script>
-  // ── Desktop hover preview ──────────────────────────────
+  // ── Pointer preview ────────────────────────────────────
   const preview    = document.getElementById('hover-preview') as HTMLDivElement;
   const previewImg = document.getElementById('hover-preview-img') as HTMLImageElement;
 
-  let mouseX = 0, mouseY = 0, rafId: number | null = null;
+  const PREVIEW_W = 260;
+  const PREVIEW_H = 163 + 6;  // image plus the 3px frame top and bottom
+  const EDGE = 16;
   const OFFSET_X = 22, OFFSET_Y = -100;
 
+  let mouseX = 0, mouseY = 0, rafId: number | null = null;
+
   function positionPreview() {
-    const pw = 260, ph = 163 + 6;
     const vw = window.innerWidth, vh = window.innerHeight;
     let x = mouseX + OFFSET_X, y = mouseY + OFFSET_Y;
-    if (x + pw > vw - 16) x = mouseX - pw - OFFSET_X;
-    if (y < 16) y = mouseY + 20;
-    if (y + ph > vh - 16) y = vh - ph - 16;
+    if (x + PREVIEW_W > vw - EDGE) x = mouseX - PREVIEW_W - OFFSET_X;
+    if (y < EDGE) y = mouseY + 20;
+    if (y + PREVIEW_H > vh - EDGE) y = vh - PREVIEW_H - EDGE;
     preview.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  // Keyboard focus has no cursor to follow, so the preview is anchored to the
+  // side of the link instead. Returns false when neither side has room, in
+  // which case nothing is shown rather than covering the link itself.
+  function positionPreviewBeside(el: Element) {
+    const r = el.getBoundingClientRect();
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const toRight = r.right + OFFSET_X;
+    const toLeft  = r.left - PREVIEW_W - OFFSET_X;
+
+    let x: number;
+    if (toRight + PREVIEW_W <= vw - EDGE) x = toRight;
+    else if (toLeft >= EDGE) x = toLeft;
+    else return false;
+
+    let y = r.top + r.height / 2 - PREVIEW_H / 2;
+    y = Math.min(Math.max(EDGE, y), vh - PREVIEW_H - EDGE);
+    preview.style.transform = `translate(${x}px, ${y}px)`;
+    return true;
   }
 
   function onMouseMove(e: MouseEvent) {
@@ -130,66 +183,96 @@
     if (!rafId) rafId = requestAnimationFrame(() => { positionPreview(); rafId = null; });
   }
 
-  // Only attach hover listeners on non-touch devices
-  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  function showPreview(src: string) {
+    if (previewImg.getAttribute('src') !== src) previewImg.src = src;
+    preview.classList.add('visible');
+  }
 
-  if (!isTouch) {
+  function hidePreview() {
+    preview.classList.remove('visible');
+    document.removeEventListener('mousemove', onMouseMove);
+  }
+
+  function previewLink(target: EventTarget | null) {
+    return (target as Element | null)?.closest?.('[data-preview]') as HTMLAnchorElement | null;
+  }
+
+  // `(pointer: coarse)` alone also matches touchscreen laptops and 2-in-1s,
+  // which do have a pointer and a keyboard. Only a device with no hover at all
+  // gets the tap-to-preview treatment.
+  const isTouchOnly = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+  if (!isTouchOnly) {
     document.addEventListener('mouseover', (e) => {
-      const link = (e.target as Element).closest('[data-preview]') as HTMLAnchorElement | null;
+      const link = previewLink(e.target);
       if (!link) return;
-      const src = link.dataset.preview ?? '';
-      if (previewImg.getAttribute('src') !== src) previewImg.src = src;
       positionPreview();
-      preview.classList.add('visible');
+      showPreview(link.dataset.preview ?? '');
       document.addEventListener('mousemove', onMouseMove);
     });
 
     document.addEventListener('mouseout', (e) => {
-      const link = (e.target as Element).closest('[data-preview]') as HTMLAnchorElement | null;
+      const link = previewLink(e.target);
       if (!link) return;
-      if (!link.contains(e.relatedTarget as Node | null)) {
-        preview.classList.remove('visible');
-        document.removeEventListener('mousemove', onMouseMove);
-      }
+      if (!link.contains(e.relatedTarget as Node | null)) hidePreview();
+    });
+
+    // Keyboard equivalent of the hover preview.
+    document.addEventListener('focusin', (e) => {
+      const link = previewLink(e.target);
+      if (!link) { hidePreview(); return; }
+      // Pointer-driven focus is already covered by the hover path above.
+      if (!link.matches(':focus-visible')) return;
+      if (positionPreviewBeside(link)) showPreview(link.dataset.preview ?? '');
+    });
+
+    document.addEventListener('focusout', (e) => {
+      if (previewLink(e.target)) hidePreview();
+    });
+
+    // WCAG 1.4.13 asks that content shown on hover or focus be dismissable
+    // without moving the pointer or the focus.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && preview.classList.contains('visible')) hidePreview();
     });
   }
 
-  // ── Mobile tap modal ───────────────────────────────────
-  const modal    = document.getElementById('mobile-modal') as HTMLDivElement;
-  const backdrop = document.getElementById('mobile-modal-backdrop') as HTMLDivElement;
-  const modalImg = document.getElementById('mobile-modal-img') as HTMLImageElement;
-  const modalLink = document.getElementById('mobile-modal-link') as HTMLAnchorElement;
+  // ── Touch dialog ───────────────────────────────────────
+  const dialog      = document.getElementById('preview-dialog') as HTMLDialogElement;
+  const dialogImg   = document.getElementById('preview-dialog-img') as HTMLImageElement;
+  const dialogLink  = document.getElementById('preview-dialog-link') as HTMLAnchorElement;
+  const dialogClose = document.getElementById('preview-dialog-close') as HTMLButtonElement;
 
-  function openModal(src: string, href: string, title: string) {
-    modalImg.src = src;
-    modalImg.alt = title;
-    modalLink.href = href;
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
+  function openDialog(link: HTMLAnchorElement) {
+    const title = link.querySelector('.portfolio-title')?.textContent?.trim() ?? 'this project';
+    dialogImg.src = link.dataset.preview ?? '';
+    dialogImg.alt = `Screenshot of the ${title} website`;
+    dialogLink.href = link.href;
+    dialog.setAttribute('aria-label', `${title} — site preview`);
+    dialog.showModal();
     document.body.style.overflow = 'hidden';
   }
 
-  function closeModal() {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
+  dialogClose.addEventListener('click', () => dialog.close());
 
-  if (isTouch) {
+  // Backdrop clicks land on the dialog element itself; the card's own children
+  // swallow everything else.
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+
+  // Fires for the close button, Esc and the backdrop alike. Focus returns to
+  // the link that opened it without us doing anything.
+  dialog.addEventListener('close', () => {
+    document.body.style.overflow = '';
+  });
+
+  if (isTouchOnly) {
     document.addEventListener('click', (e) => {
-      const link = (e.target as Element).closest('[data-preview]') as HTMLAnchorElement | null;
+      const link = previewLink(e.target);
       if (!link) return;
       e.preventDefault();
-      const src   = link.dataset.preview ?? '';
-      const href  = link.href;
-      const title = link.querySelector('.portfolio-title')?.textContent ?? '';
-      openModal(src, href, title);
-    });
-
-    backdrop.addEventListener('click', closeModal);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
+      openDialog(link);
     });
   }
 </script>

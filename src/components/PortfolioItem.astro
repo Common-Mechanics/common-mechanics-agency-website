@@ -21,7 +21,7 @@ const teamStr = team.join(', ');
       rel="noopener noreferrer"
       class="portfolio-link"
       data-preview={preview}
-      aria-label={`${title} — ${rolesStr}`}
+      aria-label={`${title} — ${rolesStr} (opens in a new tab)`}
     >
       <span class="portfolio-title">{title}</span>
     </a>
@@ -63,7 +63,8 @@ const teamStr = team.join(', ');
     min-width: 0;
   }
 
-  .portfolio-link:hover .portfolio-title {
+  .portfolio-link:hover .portfolio-title,
+  .portfolio-link:focus-visible .portfolio-title {
     text-decoration: underline;
     text-decoration-color: var(--color-fg);
     text-underline-offset: 3px;

@@ -17,14 +17,30 @@ const logos = [
 ];
 ---
 
-<div class="scroller-wrap">
-  <div class="scroller-track">
-    {logos.map(({ src, alt }) => <img src={src} alt={alt} loading="lazy" />)}
-    {logos.map(({ src, alt }) => <img src={src} alt={alt} loading="lazy" aria-hidden="true" />)}
+<div class="scroller" data-scroller>
+  {/*
+    WCAG 2.2.2 Pause, Stop, Hide: motion that runs longer than five seconds
+    alongside other content needs a way to stop it. The control is visually
+    hidden until it takes keyboard focus, so it stays out of the design while
+    remaining reachable by keyboard and by assistive tech; the marquee also
+    pauses under the pointer and drops out entirely under reduced-motion.
+  */}
+  <button type="button" class="sr-only scroller-toggle" data-scroller-toggle>
+    Pause the scrolling logos
+  </button>
+  <div class="scroller-wrap" role="group" aria-label="Organisations our team has worked with">
+    <div class="scroller-track">
+      {logos.map(({ src, alt }) => <img src={src} alt={alt} loading="lazy" />)}
+      {logos.map(({ src }) => <img src={src} alt="" loading="lazy" aria-hidden="true" />)}
+    </div>
   </div>
 </div>
 
 <style>
+  .scroller {
+    position: relative;
+  }
+
   .scroller-wrap {
     overflow: hidden;
     mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
@@ -40,7 +56,6 @@ const logos = [
     align-items: center;
     gap: var(--space-8);
     width: max-content;
-    animation: logo-scroll 80s linear infinite;
   }
 
   .scroller-track img {
@@ -58,8 +73,81 @@ const logos = [
     height: 22px;
   }
 
+  /* The animation is opt-in, like the page entrance animation. */
+  @media (prefers-reduced-motion: no-preference) {
+    .scroller-track {
+      animation: logo-scroll 80s linear infinite;
+    }
+
+    /* Stop under the pointer, and on demand. Deliberately no :focus-within —
+       the only focusable thing here is the toggle itself, so it would hold the
+       marquee paused and make the control look broken when you press Resume. */
+    .scroller-wrap:hover .scroller-track,
+    .scroller.is-paused .scroller-track {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Reduced motion: nothing scrolls, so the marquee would strand every logo
+     past the fold. Let the row wrap and show the whole set instead. */
+  @media (prefers-reduced-motion: reduce) {
+    .scroller-toggle {
+      display: none;
+    }
+
+    .scroller-wrap {
+      overflow: visible;
+      mask-image: none;
+    }
+
+    .scroller-track {
+      width: auto;
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: var(--space-6);
+    }
+
+    .scroller-track img[aria-hidden="true"] {
+      display: none;
+    }
+  }
+
+  /* Reveal the control while it holds focus, without reserving layout for it. */
+  .scroller-toggle:focus-visible {
+    position: absolute;
+    top: var(--space-2);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    overflow: visible;
+    clip-path: none;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-fg);
+    background: var(--color-bg);
+    border: 1px solid var(--color-subtle);
+    cursor: pointer;
+  }
+
   @keyframes logo-scroll {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
   }
 </style>
+
+<script>
+  const scroller = document.querySelector('[data-scroller]') as HTMLElement | null;
+  const toggle = document.querySelector('[data-scroller-toggle]') as HTMLButtonElement | null;
+
+  if (scroller && toggle) {
+    toggle.addEventListener('click', () => {
+      const paused = scroller.classList.toggle('is-paused');
+      toggle.textContent = paused ? 'Resume the scrolling logos' : 'Pause the scrolling logos';
+    });
+  }
+</script>
