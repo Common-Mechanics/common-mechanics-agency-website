@@ -77,8 +77,10 @@ with Puppeteer into `public/previews/*.jpg` (skipping ones that exist unless
 `--force`). That list is *separate* from the `projects` array in
 `Portfolio.astro` — adding a portfolio entry means updating both, keeping the
 `preview:` path and the script's `filename` in sync.
-`.github/workflows/refresh-previews.yml` reruns the capture and commits the images
-back to `main` whenever `Portfolio.astro` or the script changes.
+Capture is manual: run `npm run capture-previews` yourself after adding an entry
+and commit the JPEG alongside it. (A GitHub Action used to do this on push; it never
+succeeded — its apt step asked for `libasound2`, which Ubuntu 24.04 renamed to
+`libasound2t64` — so it was removed rather than fixed.)
 
 `HoverPreview.astro` renders the preview surfaces once per page and binds delegated
 listeners for anything carrying `data-preview`: a floating image that follows the
