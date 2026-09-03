@@ -35,4 +35,9 @@
   # 'unsafe-inline' in style-src is required only by the inline
   # style="--stagger: N" attributes on the entrance-animation elements. Move
   # those to classes and it can be dropped.
+  #
+  # script-src has no such escape hatch, so component <script>s must ship as
+  # separate files: astro.config.mjs sets vite.build.assetsInlineLimit to 0 to
+  # stop Astro inlining the small ones into the HTML, where this would block
+  # them.
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests

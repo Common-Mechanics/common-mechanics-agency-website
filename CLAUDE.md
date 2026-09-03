@@ -112,6 +112,13 @@ with the Cloudflare adapter, and the Worker serves `dist/` through the `ASSETS` 
 purpose: the Cloudflare adapter otherwise wires an unprovisioned `SESSION` KV
 binding and `wrangler deploy` fails trying to recreate the namespace. Don't remove it.
 
+It also sets `vite.build.assetsInlineLimit: 0`, which is what keeps component
+`<script>`s as separate files. `public/_headers` sends
+`Content-Security-Policy: … script-src 'self'`, so an inlined script bundle is
+blocked in production while still working in `astro dev` — the failure mode is a
+build where the hover previews and the marquee pause control simply do nothing.
+Both files carry the note; change either and check the other.
+
 `netlify.toml` is also present (build + security headers) as a fallback host config.
 
 ## Notes
