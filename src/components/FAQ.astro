@@ -46,7 +46,27 @@ const faqs: QA[] = [
     answer: "We will be operating as a remote team, serving clients anywhere in the world. We will be happy to travel to you if an in-person consultation is needed, and can be compensated.",
   },
 ];
+
+// Machine-readable mirror of the array above, generated from it so the two can
+// never drift. Note Google now restricts FAQ *rich results* to a narrow set of
+// authoritative sites, so this is unlikely to change how the page looks in the
+// SERP — its value is making the answers legible to search and AI assistants
+// that read structured data.
+//
+// A data block, not executable script: `script-src 'self'` in public/_headers
+// does not apply. Verified against a production build served via wrangler.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+  })),
+};
 ---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
 
 <section class="section" aria-labelledby="faq-label">
   <h2 class="section-label" id="faq-label">FAQ</h2>

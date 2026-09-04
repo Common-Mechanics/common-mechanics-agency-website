@@ -13,12 +13,71 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  /** Share-card image, site-root-relative. Resolved against `site` below. */
+  image?: string;
 }
 
 const {
-  title = 'Common Mechanics',
-  description = 'Website design and build for AI safety organisations.',
+  title = 'Common Mechanics — Design & web studio for AI safety nonprofits',
+  description =
+    'A design-build studio making websites, web products and design systems for ' +
+    'AI safety and high-impact nonprofit organisations. Remote team, UK registered.',
+  image = '/og.jpg',
 } = Astro.props;
+
+// Absolute URLs, resolved against `site` in astro.config.mjs. Open Graph
+// consumers reject relative image paths, and the canonical must be absolute.
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+
+// Structured data describing the company. Restated from what the page already
+// publishes — no personal data beyond the names and profile links already in
+// the Team section. `employee` (rather than an Organization-level `sameAs`) is
+// the accurate modelling: those LinkedIn profiles are personal, not the
+// company's.
+//
+// This is a data block, not executable script, so `script-src 'self'` in
+// public/_headers does not apply to it — verified in a production build served
+// through wrangler: parses in Chrome, raises no CSP violation.
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://commonmechanics.io/#organization',
+  name: 'Common Mechanics',
+  legalName: 'Common Mechanics Ltd',
+  url: 'https://commonmechanics.io/',
+  logo: 'https://commonmechanics.io/favicon.svg',
+  image: 'https://commonmechanics.io/og.jpg',
+  description:
+    'Design-build studio making websites, web products and design systems for ' +
+    'AI safety and high-impact nonprofit organisations.',
+  foundingDate: '2026',
+  areaServed: 'Worldwide',
+  knowsAbout: [
+    'AI safety',
+    'Web design',
+    'Web development',
+    'Design systems',
+    'Nonprofit communications',
+  ],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '71–75 Shelton Street',
+    addressLocality: 'London',
+    postalCode: 'WC2H 9JQ',
+    addressCountry: 'GB',
+  },
+  identifier: {
+    '@type': 'PropertyValue',
+    name: 'Companies House registration number',
+    value: '17385700',
+  },
+  employee: [
+    { '@type': 'Person', name: 'Taylor Jones', sameAs: 'https://www.linkedin.com/in/tjonesdesigner/' },
+    { '@type': 'Person', name: 'Alexander Haase', sameAs: 'https://www.linkedin.com/in/herrhaase/' },
+    { '@type': 'Person', name: 'Max Werner', sameAs: 'https://www.linkedin.com/in/max-werner-cs/' },
+  ],
+};
 ---
 <!doctype html>
 <html lang="en-GB">
@@ -27,7 +86,26 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Common Mechanics" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1260" />
+    <meta property="og:image:alt" content="Common Mechanics — the design and web partner for high-impact nonprofits." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} is:inline />
   </head>
   <body>
     <slot />

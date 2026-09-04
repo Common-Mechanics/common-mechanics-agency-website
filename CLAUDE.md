@@ -121,6 +121,40 @@ Both files carry the note; change either and check the other.
 
 `netlify.toml` is also present (build + security headers) as a fallback host config.
 
+## SEO metadata
+
+`src/layouts/Base.astro` owns every head tag search engines and share cards read:
+title, description, `<link rel="canonical">`, Open Graph, Twitter Card, and an
+`Organization` JSON-LD block. Title and description are prop defaults on that
+layout — the homepage takes them, `privacy.astro` overrides both. Canonical and
+`og:image` are built with `new URL(..., Astro.site)`, so `site` in
+`astro.config.mjs` must stay correct or both silently go relative.
+
+Two things there are easy to get wrong:
+
+- **JSON-LD is not blocked by the CSP.** `script-src 'self'` looks like it should
+  kill `<script type="application/ld+json">`, and given the history in this repo
+  that is the natural assumption — but a non-JavaScript `type` makes it a *data
+  block* that is never executed, so the CSP execution check never applies. This
+  was verified against a production build served through `wrangler dev` (which
+  reads `public/_headers`): the blocks parse in Chrome and raise no violation.
+  No hashes needed. Do not "fix" this by loosening `script-src`.
+- **`public/og.jpg` is a placeholder and its dimensions are hard-coded.** It is a
+  2400×1260 (2× of 1200×630) render of the header band, made by screenshotting a
+  throwaway HTML card with the site's own tokens and Fontsource files. It is meant
+  to be replaced by a properly designed card. When it is, update the
+  `og:image:width` / `og:image:height` values in `Base.astro` to match — several
+  scrapers trust those over the file.
+
+`FAQ.astro` additionally emits a `FAQPage` block generated from its own `faqs`
+array, so the two cannot drift. Google restricts FAQ *rich results* to a narrow
+set of authoritative sites, so this does not change the SERP appearance; it is
+there to make the answers legible to search and AI assistants.
+
+`@astrojs/sitemap` emits `/sitemap-index.xml` + `/sitemap-0.xml` at build time
+from the built routes; `public/robots.txt` points at the index. A new page is
+picked up automatically — nothing to maintain.
+
 ## Notes
 
 - Webfonts are **self-hosted** via Fontsource, imported in `src/layouts/Base.astro`'s
@@ -128,5 +162,8 @@ Both files carry the note; change either and check the other.
   reach `fonts.googleapis.com` / `fonts.gstatic.com` — that was a GDPR third-party
   transfer. Note the variable package registers the family as `'DM Sans Variable'`,
   which is why `--font-sans` lists that name first.
+- Search Console / Bing Webmaster verification is not tracked in this repo. If a
+  verification method is ever added, prefer a DNS TXT record in Cloudflare over a
+  file or meta tag, so it survives rebuilds and stays out of the markup.
 - `src/components/IntelligenceCanvas.astro` (seeded-PRNG background canvas) is currently
   unused — it is not imported by `index.astro`.

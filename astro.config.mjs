@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 import cloudflare from '@astrojs/cloudflare';
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: 'static',
@@ -18,5 +19,8 @@ export default defineConfig({
   // `astro dev`. Raising this again means adding CSP hashes for the inlined
   // scripts, not loosening the policy.
   vite: { build: { assetsInlineLimit: 0 } },
+  // Emits /sitemap-index.xml + /sitemap-0.xml from the built routes, using
+  // `site` above for absolute URLs. public/robots.txt points at the index.
+  integrations: [sitemap()],
   adapter: cloudflare(),
 });
