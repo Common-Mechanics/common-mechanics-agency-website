@@ -52,6 +52,8 @@ const VENDORS = [
   { slug: 'vercel',    vendor: 'Vercel',    entity: 'Vercel, Inc.',                           kind: 'page', url: 'https://vercel.com/legal/dpa' },
   { slug: 'cloudflare',vendor: 'Cloudflare',entity: 'Cloudflare, Inc.',                       kind: 'page', url: 'https://www.cloudflare.com/cloudflare-customer-dpa/' },
   // GitHub's own DPA, not the docs.github.com index page that merely links to it.
+  { slug: 'hetzner',   vendor: 'Hetzner',   entity: 'Hetzner Online GmbH',                    kind: 'pdf',  url: 'https://www.hetzner.com/AV/DPA_en.pdf' },
+  { slug: 'blacksmith',vendor: 'Blacksmith',entity: 'Blacksmith Software, Inc.',              kind: 'page', url: 'https://docs.blacksmith.sh/about/data-processing-addendum' },
   { slug: 'github',    vendor: 'GitHub',    entity: 'GitHub B.V.',                            kind: 'page', url: 'https://github.com/customer-terms/github-data-protection-agreement' },
   { slug: 'resend',    vendor: 'Resend',    entity: 'Plus Five Five, Inc.',                   kind: 'page', url: 'https://resend.com/legal/dpa' },
   // Google's English DPA is HTML-only and its body does not render for print —

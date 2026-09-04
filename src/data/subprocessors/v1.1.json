@@ -37,6 +37,23 @@
       ]
     },
     {
+      "name": "Hetzner",
+      "legalEntity": "Hetzner Online GmbH",
+      "registeredAddress": "Industriestraße 25, 91710 Gunzenhausen, Germany",
+      "registrationJurisdiction": "Germany",
+      "registrationNumber": "HRB 6089 (Amtsgericht Ansbach)",
+      "function": "Servers and infrastructure for client projects",
+      "processingLocations": [
+        "Germany",
+        "Finland"
+      ],
+      "dataCategories": [
+        "IP addresses",
+        "request metadata",
+        "any personal data held in a hosted application"
+      ]
+    },
+    {
       "name": "GitHub",
       "legalEntity": "GitHub B.V.",
       "registeredAddress": "Vijzelstraat 68, 1017 HL Amsterdam, Netherlands",
@@ -51,6 +68,23 @@
         "names",
         "email addresses",
         "any personal data committed to a repository or written into an issue"
+      ]
+    },
+    {
+      "name": "Blacksmith",
+      "legalEntity": "Blacksmith Software, Inc.",
+      "registeredAddress": "95 Third Street, 2nd Floor, San Francisco, CA 94103, United States",
+      "registrationJurisdiction": "Delaware, United States",
+      "registrationNumber": "",
+      "function": "Continuous integration runners for client project builds",
+      "processingLocations": [
+        "United States",
+        "European Union"
+      ],
+      "dataCategories": [
+        "names",
+        "email addresses",
+        "any personal data present in a repository at build time"
       ]
     },
     {

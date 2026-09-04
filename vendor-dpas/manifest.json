@@ -130,6 +130,26 @@
       "file": "openai-dpa.pdf",
       "bytes": 249400,
       "sha256": "sha256-e39ce15aa0cff2a257506f5243ce915c6bd48ac876ea597f606033b0a3a4f566"
+    },
+    "hetzner": {
+      "vendor": "Hetzner",
+      "entity": "Hetzner Online GmbH",
+      "url": "https://www.hetzner.com/AV/DPA_en.pdf",
+      "source": "vendor PDF",
+      "retrievedAt": "2026-09-04",
+      "file": "hetzner-dpa.pdf",
+      "bytes": 1110356,
+      "sha256": "sha256-fdb71eb26775fdc025a81a4d8b65aac681249ebe8c456736670e76d0100eaefe"
+    },
+    "blacksmith": {
+      "vendor": "Blacksmith",
+      "entity": "Blacksmith Software, Inc.",
+      "url": "https://docs.blacksmith.sh/about/data-processing-addendum",
+      "source": "rendered from the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "blacksmith-dpa.pdf",
+      "bytes": 447027,
+      "sha256": "sha256-21d1d899fe53e99c1ca5003091c9a02b0fdb9b14bd9889a2fb778f4914ab3490"
     }
   }
 }

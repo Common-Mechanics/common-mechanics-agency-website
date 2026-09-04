@@ -1,5 +1,5 @@
 {
   "_comment": "SHA-256 of every published sub-processor list version. Published versions are immutable — see scripts/data-processing-manifest.mjs. To publish a change, add a NEW version file plus the hash the build prints for it; never edit an entry that is already here.",
   "v1.0.json": "sha256-a07ba7dbafda3048c8e5a48eef7bc9ddd1c7c49a20606ecfaa5b23fc27a08f5a",
-  "v1.1.json": "sha256-6392f4cc984ab2cdbc27ff6c029331b2dd07dbbfe88a4bdfebe086d52c85d398"
+  "v1.1.json": "sha256-b06423fd36f164ae7307fbe6eef8d45e1cd64607a13e39c59fd11d055ade007b"
 }
