@@ -16,6 +16,19 @@
     <a href="mailto:privacy@commonmechanics.io">privacy@commonmechanics.io</a>
     <span aria-hidden="true">&middot;</span>
     <a href="/privacy">Privacy notice</a>
+    <span aria-hidden="true">&middot;</span>
+    {/*
+      Corroborates the `sameAs` in the Organization JSON-LD (see Base.astro):
+      a real crawlable link is a stronger entity signal than the assertion
+      alone. External links on this site open in a new tab and say so in the
+      accessible name — same convention as the team profiles in Team.astro.
+    */}
+    <a
+      href="https://www.linkedin.com/company/common-mechanics"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Common Mechanics on LinkedIn (opens in a new tab)"
+    >LinkedIn</a>
   </span>
 </footer>
 
