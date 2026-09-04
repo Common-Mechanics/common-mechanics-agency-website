@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "effectiveDate": "2026-09-04",
+  "subprocessors": [
+    { "name": "Vercel", "function": "web hosting" },
+    { "name": "Cloudflare", "function": "web hosting" },
+    { "name": "GitHub", "function": "code repository" },
+    { "name": "Resend", "function": "transactional emails" },
+    { "name": "Google", "function": "file storage, documents, communications" },
+    { "name": "Notion", "function": "documents, project management" },
+    { "name": "Linear", "function": "project management" },
+    { "name": "Slack", "function": "communications" },
+    { "name": "Figma", "function": "design" },
+    { "name": "Adobe", "function": "design" },
+    { "name": "1Password", "function": "credentials" },
+    { "name": "Anthropic", "function": "AI inference" },
+    { "name": "OpenAI", "function": "AI inference" }
+  ]
+}

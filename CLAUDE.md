@@ -18,6 +18,7 @@ npm run preview          # build, then serve through wrangler dev (Workers runti
 npm run deploy           # build + wrangler deploy
 npm run generate-types   # wrangler types → worker-configuration.d.ts (gitignored)
 npm run capture-previews # re-screenshot portfolio sites (add -- --force to redo existing)
+npm run dpa-manifest     # rebuild + verify the /data-processing data (runs as pre-dev/pre-build)
 ```
 
 There is no test suite and no linter. `npm run build` (Astro's type/template check)
@@ -102,6 +103,49 @@ browser refetches the page as an image on every load.
 control that is `.sr-only` until focused, pauses under the pointer, and is replaced
 by a wrapped static grid under `prefers-reduced-motion: reduce` (without that the
 non-animating track would strand most of the logos outside the clip).
+
+## The /data-processing page
+
+`src/pages/data-processing.astro` publishes the Data Processing Agreement PDFs and
+the sub-processor list (COM-106). Its data is prepared and *validated* by
+`scripts/data-processing-manifest.mjs`, wired as npm `prebuild` and `predev`, which
+writes the gitignored `src/data/data-processing.generated.json` that the page reads
+through `src/data/data-processing.ts`.
+
+That indirection exists for two reasons, and collapsing it back into the page
+frontmatter breaks both:
+
+- **`node:fs` does not work in page frontmatter here.** The Cloudflare adapter
+  prerenders inside workerd, so a directory scan in an `.astro` file fails with
+  `No such module "node:fs"`.
+- **A `throw` in page frontmatter does not fail the build.** Astro logs the error,
+  writes a *zero-byte* `index.html` and still exits 0 — so a validity check that
+  lives there silently ships a blank compliance page instead of stopping the
+  deploy. The script runs before Astro and exits non-zero, which actually aborts
+  `npm run build`.
+
+**Agreement PDFs are found by scanning `public/dpa/`.** There is no list to
+maintain: drop the PDF in, named `dpa-v<major>.<minor>-<YYYY-MM-DD>.pdf`, and the
+page reads the version and publish date out of the filename. Anything in that
+directory not matching the pattern is a build error rather than a silent omission.
+They stay in `public/` (not `src/assets/`) on purpose — a signed legal document
+needs a stable, citable `/dpa/…` URL, not a content hash that moves when the file is
+re-saved. For the same reason the script scans with `fs` rather than
+`import.meta.glob`: the glob pulls each PDF into Vite's module graph and emits a
+second, hashed copy into `_astro/`.
+
+**Each sub-processor list version is immutable.** A version is one file in
+`src/data/subprocessors/`, named `v<major>.<minor>.json`, and
+`src/data/subprocessors.lock.json` pins its SHA-256. Changing who processes personal
+data means adding a *new* version file plus the hash the failing build prints —
+never editing a published one. The build also fails if a published version is
+deleted, or if a file's name disagrees with the `version` inside it. The newest
+version renders in full; superseded ones stay on the page inside `<details>`, which
+is the point: a reader has to be able to see what the list said on a given date.
+
+The "last updated" line the page is required to carry is derived from the newest
+agreement and sub-processor date, never hand-written, so it cannot go stale when
+someone adds a PDF and forgets it.
 
 ## Deployment
 

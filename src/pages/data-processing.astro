@@ -1,0 +1,305 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+  agreements,
+  currentSubprocessors,
+  lastUpdated,
+  supersededSubprocessors,
+} from '../data/data-processing';
+import { formatDate } from '../data/format-date';
+
+const dataProtectionLead = { name: 'Taylor Jones', email: 'taylor@commonmechanics.io' };
+---
+
+<Base
+  title="Data processing — Common Mechanics"
+  description="Common Mechanics' Data Processing Agreement, and the versioned list of sub-processors that handle personal data on behalf of our clients and their users."
+>
+  <main class="dpa">
+    <header class="section dpa-header" data-rule="bottom">
+      <p class="dpa-back-top"><a href="/">Common Mechanics</a></p>
+      <p class="section-label">Data processing</p>
+      <h1 class="dpa-title">Data Processing Agreement</h1>
+      <p class="dpa-lede">
+        Where we handle personal data on a client's behalf we do it as their processor,
+        under the agreement published here. This page holds the agreement itself and the
+        current list of sub-processors we rely on, so a client — or their counsel — can
+        check both without asking us first.
+      </p>
+      <p class="dpa-updated">
+        Check this page periodically — last updated
+        <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
+      </p>
+    </header>
+
+    <section class="section dpa-body" data-rule="bottom" aria-labelledby="the-agreement">
+      <h2 id="the-agreement">The agreement</h2>
+      <p>
+        Each version below is the agreement exactly as it stood on its publish date.
+        Superseded versions stay online so you can always read the terms that applied to a
+        past engagement.
+      </p>
+
+      {agreements.length > 0 ? (
+        <ul class="dpa-files">
+          {agreements.map((agreement, index) => (
+            <li>
+              <a
+                href={agreement.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Data Processing Agreement version ${agreement.version}, PDF (opens in a new tab)`}
+              >
+                Data Processing Agreement v{agreement.version}
+              </a>
+              <span class="dpa-file-meta">
+                PDF &middot; published <time datetime={agreement.publishedDate}>{agreement.publishedDateLabel}</time>
+                {index === 0 ? <> &middot; <span class="dpa-flag">current</span></> : null}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="dpa-empty">
+          The agreement is not published here yet. Email
+          <a href={`mailto:${dataProtectionLead.email}`}>{dataProtectionLead.email}</a> and we
+          will send you the current version.
+        </p>
+      )}
+
+      <h2 id="sub-processors">Sub-processors</h2>
+      <p>
+        These are the third parties that may process personal data belonging to our clients,
+        or to their customers and users, in the course of our work. The list is versioned:
+        each version is published in full and is never edited afterwards, so what follows can
+        be relied on as a record rather than a snapshot.
+      </p>
+      <p class="dpa-version-line">
+        Version {currentSubprocessors.version} &middot; effective
+        <time datetime={currentSubprocessors.effectiveDate}>{currentSubprocessors.effectiveDateLabel}</time>
+      </p>
+      <ul class="dpa-subprocessors">
+        {currentSubprocessors.subprocessors.map((subprocessor) => (
+          <li><strong>{subprocessor.name}</strong> &ndash; {subprocessor.function}</li>
+        ))}
+      </ul>
+
+      {supersededSubprocessors.length > 0 && (
+        <>
+          <h3>Previous versions</h3>
+          {supersededSubprocessors.map((version) => (
+            <details class="dpa-archive">
+              <summary>
+                Version {version.version} &middot; effective
+                <time datetime={version.effectiveDate}>{version.effectiveDateLabel}</time>
+              </summary>
+              <ul class="dpa-subprocessors">
+                {version.subprocessors.map((subprocessor) => (
+                  <li><strong>{subprocessor.name}</strong> &ndash; {subprocessor.function}</li>
+                ))}
+              </ul>
+            </details>
+          ))}
+        </>
+      )}
+
+      <h2 id="data-protection-lead">Data protection lead</h2>
+      <p>
+        {dataProtectionLead.name} (<a href={`mailto:${dataProtectionLead.email}`}>{dataProtectionLead.email}</a>).
+        Write to them about the agreement, a sub-processor, or anything else on this page.
+      </p>
+      <p>
+        How we handle personal data as a controller — visitors to this site, and people who
+        email us — is a separate matter, covered by our <a href="/privacy">privacy notice</a>.
+      </p>
+    </section>
+
+    <nav class="section dpa-back" aria-label="Back to the home page">
+      <a href="/">Back to the home page</a>
+    </nav>
+  </main>
+</Base>
+
+<style>
+  /* ─── Header band ──────────────────────────────── */
+  .dpa-header {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-12);
+  }
+
+  .dpa-back-top {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: var(--space-8);
+  }
+
+  /* Tighter than the default label gap — the label belongs to the title here */
+  .dpa-header .section-label {
+    margin-bottom: var(--space-3);
+  }
+
+  .dpa-title {
+    font-family: var(--font-sans);
+    font-size: clamp(var(--font-size-xl), 6vw, var(--font-size-2xl));
+    font-weight: 300;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.15;
+    margin-bottom: var(--space-6);
+  }
+
+  .dpa-lede {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    line-height: 1.5;
+    max-width: 46ch;
+    margin-bottom: var(--space-8);
+  }
+
+  /* Required standing notice — kept at full contrast, not softened to meta grey */
+  .dpa-updated {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* ─── Body band ────────────────────────────────── */
+  .dpa-body {
+    /* Long addresses and filenames must not push the page sideways at 320px */
+    overflow-wrap: break-word;
+  }
+
+  .dpa-body h2 {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    line-height: 1.3;
+    border-top: 1px solid var(--color-accent-line);
+    padding-top: var(--space-6);
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-4);
+  }
+
+  /* First heading sits flush with the top of the band */
+  .dpa-body h2:first-child {
+    border-top: 0;
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  .dpa-body h3 {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+  }
+
+  .dpa-body p,
+  .dpa-body li {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+
+  .dpa-body p + p {
+    margin-top: var(--space-4);
+  }
+
+  .dpa-body strong {
+    font-weight: 700;
+  }
+
+  .dpa-body ul {
+    list-style: none;
+    margin-top: var(--space-4);
+  }
+
+  .dpa-body li {
+    position: relative;
+    padding-left: var(--space-6);
+  }
+
+  .dpa-body li + li {
+    margin-top: var(--space-3);
+  }
+
+  /* Technical-drawing dash instead of a bullet */
+  .dpa-body li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: var(--space-3);
+    height: 1px;
+    background: var(--color-rule);
+  }
+
+  /* ─── Agreement list ───────────────────────────── */
+  .dpa-files li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--space-3);
+  }
+
+  .dpa-files a {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-base);
+  }
+
+  .dpa-file-meta {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-muted);
+  }
+
+  .dpa-flag {
+    color: var(--color-accent);
+    text-transform: uppercase;
+  }
+
+  .dpa-empty {
+    font-family: var(--font-sans);
+  }
+
+  /* ─── Sub-processors ───────────────────────────── */
+  .dpa-version-line {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-muted);
+    margin-top: var(--space-6);
+  }
+
+  .dpa-archive {
+    margin-top: var(--space-4);
+  }
+
+  .dpa-archive summary {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    letter-spacing: var(--tracking-wide);
+    cursor: pointer;
+  }
+
+  .dpa-archive summary:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* ─── Back band ────────────────────────────────── */
+  .dpa-back {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-24);
+    font-size: var(--font-size-sm);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* ─── Focus ────────────────────────────────────── */
+  a:focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+</style>
