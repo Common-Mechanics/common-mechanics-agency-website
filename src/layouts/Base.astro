@@ -32,9 +32,10 @@ const ogImage = new URL(image, Astro.site);
 
 // Structured data describing the company. Restated from what the page already
 // publishes — no personal data beyond the names and profile links already in
-// the Team section. `employee` (rather than an Organization-level `sameAs`) is
-// the accurate modelling: those LinkedIn profiles are personal, not the
-// company's.
+// the Team section. Note the two kinds of profile link are modelled
+// differently: `sameAs` is the company's own LinkedIn page, while the team's
+// personal profiles hang off `employee`. Putting a personal profile in the
+// Organization's `sameAs` would assert it is another profile of the company.
 //
 // This is a data block, not executable script, so `script-src 'self'` in
 // public/_headers does not apply to it — verified in a production build served
@@ -53,6 +54,7 @@ const organizationSchema = {
     'AI safety and high-impact nonprofit organisations.',
   foundingDate: '2026',
   areaServed: 'Worldwide',
+  sameAs: ['https://www.linkedin.com/company/common-mechanics'],
   knowsAbout: [
     'AI safety',
     'Web design',
