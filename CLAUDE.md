@@ -119,8 +119,6 @@ blocked in production while still working in `astro dev` — the failure mode is
 build where the hover previews and the marquee pause control simply do nothing.
 Both files carry the note; change either and check the other.
 
-`netlify.toml` is also present (build + security headers) as a fallback host config.
-
 ## SEO metadata
 
 `src/layouts/Base.astro` owns every head tag search engines and share cards read:

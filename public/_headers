@@ -1,10 +1,8 @@
 # Security headers for the Cloudflare Workers deployment.
 #
-# netlify.toml carries a similar (shorter) set, but Netlify is only the fallback
-# host — production deploys to Cloudflare Workers via wrangler, which does not
-# read that file. Workers Static Assets reads this one, the same way Pages does.
-# Because the build is fully static, every response is an asset response, so
-# these apply site-wide.
+# Production deploys to Cloudflare Workers via wrangler; Workers Static Assets
+# reads this file the same way Pages does. Because the build is fully static,
+# every response is an asset response, so these apply site-wide.
 #
 # Relevant to UK GDPR Art. 32 (appropriate technical measures).
 

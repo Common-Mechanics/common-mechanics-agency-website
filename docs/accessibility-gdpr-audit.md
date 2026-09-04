@@ -59,7 +59,7 @@ colour pairs, not four nodes.
 | G2 No privacy notice | **Fixed** — Art. 13 notice published | `src/pages/privacy.astro`, linked from the footer |
 | G3 `/fonts` deployed | **Fixed** — page deleted, `robots.txt` added | `public/robots.txt` |
 | G4 Workers observability | **Fixed** — disabled (data minimisation) | `wrangler.jsonc` |
-| G5 No security headers | **Fixed** — CSP locked to `'self'`, HSTS, Permissions-Policy; Netlify fallback brought to parity | `public/_headers`, `netlify.toml` |
+| G5 No security headers | **Fixed** — CSP locked to `'self'`, HSTS, Permissions-Policy | `public/_headers` |
 | G6 Place of registration | **Fixed** — "Registered in England and Wales" | `src/components/Footer.astro` |
 | G7 Contact / VAT | **Fixed** — `privacy@commonmechanics.io` published; VAT line pre-written and commented out pending the number | `src/components/Footer.astro` |
 | G8 Cookieless position | **Documented** — written policy on what analytics may be added | `docs/data-protection.md` §3 |
