@@ -1,0 +1,221 @@
+{
+  "version": "1.1",
+  "effectiveDate": "2026-09-04",
+  "subprocessors": [
+    {
+      "name": "Vercel",
+      "legalEntity": "Vercel, Inc.",
+      "registeredAddress": "440 N Barranca Ave #4133, Covina, CA 91723, United States",
+      "registrationJurisdiction": "Delaware, United States",
+      "registrationNumber": "",
+      "function": "Web hosting",
+      "processingLocations": [
+        "United States",
+        "Vercel global edge network"
+      ],
+      "dataCategories": [
+        "IP addresses",
+        "request metadata",
+        "any personal data held in a hosted application"
+      ]
+    },
+    {
+      "name": "Cloudflare",
+      "legalEntity": "Cloudflare, Inc.",
+      "registeredAddress": "101 Townsend Street, San Francisco, CA 94107, United States",
+      "registrationJurisdiction": "Delaware, United States",
+      "registrationNumber": "",
+      "function": "Web hosting",
+      "processingLocations": [
+        "United States",
+        "Cloudflare global edge network"
+      ],
+      "dataCategories": [
+        "IP addresses",
+        "request metadata",
+        "any personal data held in a hosted application"
+      ]
+    },
+    {
+      "name": "GitHub",
+      "legalEntity": "GitHub B.V.",
+      "registeredAddress": "Vijzelstraat 68, 1017 HL Amsterdam, Netherlands",
+      "registrationJurisdiction": "Netherlands",
+      "registrationNumber": "KvK 61237523",
+      "function": "Source code repositories, issue tracking and build automation",
+      "processingLocations": [
+        "United States",
+        "European Union"
+      ],
+      "dataCategories": [
+        "names",
+        "email addresses",
+        "any personal data committed to a repository or written into an issue"
+      ]
+    },
+    {
+      "name": "Resend",
+      "legalEntity": "Plus Five Five, Inc. (trading as Resend)",
+      "registeredAddress": "2261 Market Street #5039, San Francisco, CA 94114, United States",
+      "registrationJurisdiction": "Delaware, United States",
+      "registrationNumber": "",
+      "function": "Transactional email delivery for client applications",
+      "processingLocations": [
+        "United States"
+      ],
+      "dataCategories": [
+        "names",
+        "email addresses",
+        "message content"
+      ]
+    },
+    {
+      "name": "Google",
+      "legalEntity": "Google Ireland Limited",
+      "registeredAddress": "Gordon House, Barrow Street, Dublin 4, D04 E5W5, Ireland",
+      "registrationJurisdiction": "Ireland",
+      "registrationNumber": "CRO 368047",
+      "function": "File storage, documents, calendars and email",
+      "processingLocations": [
+        "European Union",
+        "United States"
+      ],
+      "dataCategories": [
+        "names",
+        "email addresses",
+        "message content",
+        "any personal data held in a stored document"
+      ]
+    },
+    {
+      "name": "Notion",
+      "legalEntity": "Notion Labs, Inc.",
+      "registeredAddress": "2300 Harrison Street, San Francisco, CA 94110, United States",
+      "registrationJurisdiction": "Delaware, United States",
+      "registrationNumber": "",
+      "function": "Internal documentation and project management",
+      "processingLocations": [
+        "United States"
+      ],
+      "dataCategories": [
+        "names",
+        "email addresses",
+        "any personal data written into project notes"
+      ]
+    },
+    {
+      "name": "Linear",
+      "legalEntity": "Linear Orbit, Inc.",
+      "registeredAddress": "2261 Market Street STE 10632, San Francisco, CA 94114, United States",
+      "registrationJurisdiction": "Delaware, United States",
+      "registrationNumber": "",
+      "function": "Issue tracking and project management",
+      "processingLocations": [
+        "United States"
+      ],
+      "dataCategories": [
+        "names",
+        "email addresses",
+        "any personal data written into an issue"
+      ]
+    },
+    {
+      "name": "Slack",
+      "legalEntity": "Slack Technologies Limited",
+      "registeredAddress": "Salesforce Tower, 60 R801, North Dock, Dublin 1, Ireland",
+      "registrationJurisdiction": "Ireland",
+      "registrationNumber": "CRO 558379",
+      "function": "Internal and client communications",
+      "processingLocations": [
+        "United States",
+        "European Union"
+      ],
+      "dataCategories": [
+        "names",
+        "email addresses",
+        "message content",
+        "shared files"
+      ]
+    },
+    {
+      "name": "Figma",
+      "legalEntity": "Figma, Inc.",
+      "registeredAddress": "760 Market Street, Floor 10, San Francisco, CA 94102, United States",
+      "registrationJurisdiction": "Delaware, United States",
+      "registrationNumber": "",
+      "function": "Interface design, prototyping and design review",
+      "processingLocations": [
+        "United States"
+      ],
+      "dataCategories": [
+        "names",
+        "email addresses",
+        "any personal data appearing in design files"
+      ]
+    },
+    {
+      "name": "Adobe",
+      "legalEntity": "Adobe Systems Software Ireland Limited",
+      "registeredAddress": "4–6 Riverwalk, Citywest Business Campus, Saggart, Dublin 24, D24 DCW0, Ireland",
+      "registrationJurisdiction": "Ireland",
+      "registrationNumber": "CRO 344992",
+      "function": "Image, video and document production",
+      "processingLocations": [
+        "European Union",
+        "United States"
+      ],
+      "dataCategories": [
+        "names",
+        "email addresses",
+        "any personal data appearing in supplied media or documents"
+      ]
+    },
+    {
+      "name": "1Password",
+      "legalEntity": "AgileBits Inc.",
+      "registeredAddress": "4711 Yonge Street, 10th Floor, Toronto, Ontario M2N 6K8, Canada",
+      "registrationJurisdiction": "Ontario, Canada",
+      "registrationNumber": "",
+      "function": "Credential storage and sharing",
+      "processingLocations": [
+        "Canada",
+        "United States"
+      ],
+      "dataCategories": [
+        "names",
+        "email addresses",
+        "credentials for client-controlled systems"
+      ]
+    },
+    {
+      "name": "Anthropic",
+      "legalEntity": "Anthropic Ireland, Limited",
+      "registeredAddress": "6th Floor, South Bank House, Barrow Street, Dublin 4, Ireland",
+      "registrationJurisdiction": "Ireland",
+      "registrationNumber": "CRO 760497",
+      "function": "AI inference for development and content work",
+      "processingLocations": [
+        "United States",
+        "European Union"
+      ],
+      "dataCategories": [
+        "any personal data contained in text submitted for inference"
+      ]
+    },
+    {
+      "name": "OpenAI",
+      "legalEntity": "OpenAI Ireland Limited",
+      "registeredAddress": "1st Floor, The Liffey Trust Centre, 117–126 Sheriff Street Upper, Dublin 1, D01 YC43, Ireland",
+      "registrationJurisdiction": "Ireland",
+      "registrationNumber": "CRO 737350",
+      "function": "AI inference for development and content work",
+      "processingLocations": [
+        "United States",
+        "European Union"
+      ],
+      "dataCategories": [
+        "any personal data contained in text submitted for inference"
+      ]
+    }
+  ]
+}

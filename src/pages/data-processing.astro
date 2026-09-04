@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import SubprocessorList from '../components/SubprocessorList.astro';
 import {
   agreements,
   currentSubprocessors,
@@ -70,19 +71,18 @@ const dataProtectionLead = { name: 'Taylor Jones', email: 'taylor@commonmechanic
       <h2 id="sub-processors">Sub-processors</h2>
       <p>
         These are the third parties that may process personal data belonging to our clients,
-        or to their customers and users, in the course of our work. The list is versioned:
-        each version is published in full and is never edited afterwards, so what follows can
-        be relied on as a record rather than a snapshot.
+        or to their customers and users, in the course of our work. For each one we record the
+        contracting legal entity and its registered office, what it does for us, the countries
+        it processes or stores the data in, and the categories of personal data involved &mdash;
+        enough to assess an international transfer without having to write to us first. The
+        list is versioned: each version is published in full and is never edited afterwards, so
+        what follows can be relied on as a record rather than a snapshot.
       </p>
       <p class="dpa-version-line">
         Version {currentSubprocessors.version} &middot; effective
         <time datetime={currentSubprocessors.effectiveDate}>{currentSubprocessors.effectiveDateLabel}</time>
       </p>
-      <ul class="dpa-subprocessors">
-        {currentSubprocessors.subprocessors.map((subprocessor) => (
-          <li><strong>{subprocessor.name}</strong> &ndash; {subprocessor.function}</li>
-        ))}
-      </ul>
+      <SubprocessorList subprocessors={currentSubprocessors.subprocessors} />
 
       {supersededSubprocessors.length > 0 && (
         <>
@@ -93,11 +93,7 @@ const dataProtectionLead = { name: 'Taylor Jones', email: 'taylor@commonmechanic
                 Version {version.version} &middot; effective
                 <time datetime={version.effectiveDate}>{version.effectiveDateLabel}</time>
               </summary>
-              <ul class="dpa-subprocessors">
-                {version.subprocessors.map((subprocessor) => (
-                  <li><strong>{subprocessor.name}</strong> &ndash; {subprocessor.function}</li>
-                ))}
-              </ul>
+              <SubprocessorList subprocessors={version.subprocessors} />
             </details>
           ))}
         </>

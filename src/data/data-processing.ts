@@ -18,6 +18,30 @@ export interface Subprocessor {
   name: string;
   /** What they do for us — the "[sub-processor] – [function]" right-hand side. */
   function: string;
+  /**
+   * The fields below arrived in list v1.1. They are optional on the type
+   * because v1.0 is published and immutable and does not carry them — the
+   * page renders whichever half of the record a given version holds. The
+   * build-time check in scripts/data-processing-manifest.mjs requires them
+   * from v1.1 onward, so "optional" here never means "optional in practice"
+   * for a version anyone is about to publish.
+   */
+  /** Contracting legal entity, e.g. "Google Ireland Limited". */
+  legalEntity?: string;
+  /** Registered office of that entity. */
+  registeredAddress?: string;
+  /** Where that entity is incorporated, e.g. "Ireland". */
+  registrationJurisdiction?: string;
+  /**
+   * Public company number where one exists (CRO, KvK, Companies House).
+   * Empty for US entities: a Delaware file number is not a public identifier,
+   * and no data protection law requires one here.
+   */
+  registrationNumber?: string;
+  /** Countries or regions where they process or store the data. */
+  processingLocations?: string[];
+  /** Categories of personal data we send them. */
+  dataCategories?: string[];
 }
 
 export interface Agreement {

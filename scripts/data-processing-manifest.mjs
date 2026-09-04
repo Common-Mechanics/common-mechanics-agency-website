@@ -35,6 +35,37 @@ const OUT_FILE = join(ROOT, 'src', 'data', 'data-processing.generated.json');
 /** `dpa-v<major>.<minor>-<YYYY-MM-DD>.pdf` */
 const PDF_PATTERN = /^dpa-v(\d+\.\d+)-(\d{4}-\d{2}-\d{2})\.pdf$/;
 
+/**
+ * Fields every sub-processor entry must carry, and what each one is for.
+ *
+ * `registrationNumber` is deliberately absent: a public company number exists
+ * for the Irish, UK and Dutch entities here but not for the US ones (a Delaware
+ * file number is not a public-facing identifier), so it is optional and
+ * `registrationJurisdiction` is what carries the weight. Nothing in the UK GDPR
+ * requires a registration number on this list — see the note in
+ * src/data/subprocessors/README.md.
+ */
+const REQUIRED_STRING_FIELDS = [
+  ['name', 'the name the sub-processor is commonly known by'],
+  ['legalEntity', 'the contracting legal entity, e.g. "Google Ireland Limited"'],
+  ['registeredAddress', 'the registered office of that entity'],
+  ['registrationJurisdiction', 'where that entity is incorporated'],
+  ['function', 'what they do for us'],
+];
+
+const REQUIRED_LIST_FIELDS = [
+  ['processingLocations', 'countries or regions where they process or store the data'],
+  ['dataCategories', 'the categories of personal data we send them'],
+];
+
+/**
+ * v1.0 was published with only `name` and `function` and is immutable, so the
+ * shape check starts at the first version that carries the fuller record.
+ * Raising this floor is how a future schema change gets rolled out: publish the
+ * new version, then move the floor to it.
+ */
+const RICH_SCHEMA_FROM = '1.1';
+
 const problems = [];
 
 /** Numeric compare on `major.minor`, so v1.10 sorts above v1.9. */
@@ -42,6 +73,46 @@ function compareVersions(a, b) {
   const [aMajor, aMinor] = a.split('.').map(Number);
   const [bMajor, bMinor] = b.split('.').map(Number);
   return aMajor - bMajor || aMinor - bMinor;
+}
+
+/**
+ * Checks one entry of a sub-processor list. Returns a list of human-readable
+ * problems; an empty list means the entry is publishable.
+ *
+ * A missing field here is not a cosmetic defect: this page is what a client's
+ * counsel reads to decide whether our processing chain is acceptable, so an
+ * entry that names a sub-processor without saying where it processes the data
+ * is worse than no entry at all. Hence a build error rather than a blank cell.
+ */
+function validateSubprocessor(entry, file, index) {
+  const found = [];
+  const label = entry?.name ? `"${entry.name}"` : `entry ${index + 1}`;
+
+  if (typeof entry !== 'object' || entry === null) {
+    return [`${file}: entry ${index + 1} is not an object.`];
+  }
+
+  for (const [field, purpose] of REQUIRED_STRING_FIELDS) {
+    if (typeof entry[field] !== 'string' || !entry[field].trim()) {
+      found.push(`${file}: ${label} is missing "${field}" — ${purpose}.`);
+    }
+  }
+
+  for (const [field, purpose] of REQUIRED_LIST_FIELDS) {
+    const value = entry[field];
+    if (!Array.isArray(value) || !value.length) {
+      found.push(`${file}: ${label} is missing "${field}" — ${purpose}.`);
+    } else if (value.some((item) => typeof item !== 'string' || !item.trim())) {
+      found.push(`${file}: ${label} has a blank value in "${field}".`);
+    }
+  }
+
+  // Optional, but if present it has to say something.
+  if ('registrationNumber' in entry && typeof entry.registrationNumber !== 'string') {
+    found.push(`${file}: ${label} has a non-string "registrationNumber".`);
+  }
+
+  return found;
 }
 
 function listFiles(dir, extension) {
@@ -124,6 +195,21 @@ for (const file of listFiles(VERSIONS_DIR, '.json')) {
         `  it should be named v${parsed.version}.json.`,
     );
     continue;
+  }
+
+  if (!Array.isArray(parsed.subprocessors) || !parsed.subprocessors.length) {
+    problems.push(`Sub-processor version ${file} has no "subprocessors" array.`);
+    continue;
+  }
+
+  if (compareVersions(parsed.version, RICH_SCHEMA_FROM) >= 0) {
+    const shapeProblems = parsed.subprocessors.flatMap((entry, index) =>
+      validateSubprocessor(entry, file, index),
+    );
+    if (shapeProblems.length) {
+      problems.push(...shapeProblems);
+      continue;
+    }
   }
 
   versions.push({

@@ -1,0 +1,174 @@
+---
+/**
+ * One version of the sub-processor list, rendered as a record rather than a
+ * bare list of names.
+ *
+ * Two shapes go through here. v1.0 carries only `name` and `function`; from
+ * v1.1 each entry also carries the contracting entity, its registered office,
+ * where the data is processed and which categories of personal data we send.
+ * Published versions are immutable, so the old shape can never be back-filled
+ * — every detail row is therefore rendered only if the entry has it, and a
+ * superseded version keeps looking exactly as it did on the day it was in
+ * force. That is the point of keeping them online at all.
+ *
+ * The `<dl>` is deliberate: a screen reader announces the term with the value,
+ * so "Registered office, Gordon House, Barrow Street…" reads as one fact.
+ * A table would be the other reasonable choice, but a table of six columns
+ * does not survive a 320px viewport, and this page is required reading, not
+ * optional.
+ */
+import type { Subprocessor } from '../data/data-processing';
+
+interface Props {
+  subprocessors: Subprocessor[];
+}
+
+const { subprocessors } = Astro.props;
+
+/**
+ * v1.0 entries carry no detail fields at all. Without this the `<dl>` would
+ * still render — an empty element with a left rule and its own margin, which
+ * reads as a missing value rather than as a field that did not exist yet.
+ */
+const hasDetail = (subprocessor: Subprocessor): boolean =>
+  Boolean(
+    subprocessor.legalEntity ||
+      subprocessor.registeredAddress ||
+      subprocessor.processingLocations?.length ||
+      subprocessor.dataCategories?.length,
+  );
+---
+
+<ul class="subprocessors">
+  {subprocessors.map((subprocessor) => (
+    <li class="subprocessor">
+      <p class="subprocessor-head">
+        <strong>{subprocessor.name}</strong> &ndash; {subprocessor.function}
+      </p>
+
+      {hasDetail(subprocessor) && (
+      <dl class="subprocessor-detail">
+        {subprocessor.legalEntity && (
+          <>
+            <dt>Entity</dt>
+            <dd>
+              {subprocessor.legalEntity}
+              {subprocessor.registrationNumber ? ` · ${subprocessor.registrationNumber}` : null}
+              {subprocessor.registrationJurisdiction
+                ? ` · incorporated in ${subprocessor.registrationJurisdiction}`
+                : null}
+            </dd>
+          </>
+        )}
+
+        {subprocessor.registeredAddress && (
+          <>
+            <dt>Registered office</dt>
+            <dd>{subprocessor.registeredAddress}</dd>
+          </>
+        )}
+
+        {subprocessor.processingLocations?.length ? (
+          <>
+            <dt>Processed in</dt>
+            <dd>{subprocessor.processingLocations.join(', ')}</dd>
+          </>
+        ) : null}
+
+        {subprocessor.dataCategories?.length ? (
+          <>
+            <dt>Personal data</dt>
+            <dd>{subprocessor.dataCategories.join(', ')}</dd>
+          </>
+        ) : null}
+      </dl>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .subprocessors {
+    list-style: none;
+    margin-top: var(--space-4);
+  }
+
+  .subprocessor {
+    position: relative;
+    padding-left: var(--space-6);
+    max-width: 68ch;
+    /* Registered addresses and long entity names must not widen the page at
+       320px, or when a low-vision visitor has raised their root font size. */
+    overflow-wrap: anywhere;
+  }
+
+  .subprocessor + .subprocessor {
+    margin-top: var(--space-6);
+  }
+
+  /* Technical-drawing dash instead of a bullet — matches .dpa-body li */
+  .subprocessor::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: var(--space-3);
+    height: 1px;
+    background: var(--color-rule);
+  }
+
+  .subprocessor-head {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: 1.7;
+  }
+
+  .subprocessor-head strong {
+    font-weight: 700;
+  }
+
+  /* ─── Detail rows ──────────────────────────────── */
+  .subprocessor-detail {
+    display: grid;
+    /* The label column sizes to the longest term, then stops growing */
+    grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
+    gap: var(--space-1) var(--space-4);
+    margin-top: var(--space-2);
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--color-accent-line);
+  }
+
+  .subprocessor-detail dt {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-muted);
+    line-height: 1.6;
+    /* Terms read as labels, not as sentence text */
+    text-transform: lowercase;
+  }
+
+  .subprocessor-detail dd {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Under ~34rem the two columns stop fitting an address; stack them so the
+     value gets the full measure rather than breaking mid-word in a 12ch cell. */
+  @media (max-width: 34rem) {
+    .subprocessor-detail {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .subprocessor-detail dt {
+      margin-top: var(--space-2);
+    }
+
+    .subprocessor-detail dt:first-of-type {
+      margin-top: 0;
+    }
+  }
+</style>
