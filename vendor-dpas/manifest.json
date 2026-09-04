@@ -1,0 +1,135 @@
+{
+  "_comment": "Copies of each sub-processor's own published DPA, retained as our Art. 28(4) record. Written by scripts/fetch-vendor-dpas.mjs — see vendor-dpas/README.md. A changed sha256 on re-fetch means that vendor altered its DPA.",
+  "retrieved": {
+    "vercel": {
+      "vendor": "Vercel",
+      "entity": "Vercel, Inc.",
+      "url": "https://vercel.com/legal/dpa",
+      "source": "rendered from the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "vercel-dpa.pdf",
+      "bytes": 2986894,
+      "sha256": "sha256-f3fd4639b3e87af12fc3903cac8016bb3554fb96c94d267419abfbc1fb4eb40f"
+    },
+    "cloudflare": {
+      "vendor": "Cloudflare",
+      "entity": "Cloudflare, Inc.",
+      "url": "https://www.cloudflare.com/cloudflare-customer-dpa/",
+      "source": "rendered from the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "cloudflare-dpa.pdf",
+      "bytes": 1258822,
+      "sha256": "sha256-991acd2c132d2bfb56eceb994345445f2e8a5be9f6b52a4a0ab3e0000658dd68"
+    },
+    "github": {
+      "vendor": "GitHub",
+      "entity": "GitHub B.V.",
+      "url": "https://github.com/customer-terms/github-data-protection-agreement",
+      "source": "rendered from the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "github-dpa.pdf",
+      "bytes": 597786,
+      "sha256": "sha256-ece587acf2cb55a207ff76a386ce09893caaf1f174afc62a67d903740b97532a"
+    },
+    "resend": {
+      "vendor": "Resend",
+      "entity": "Plus Five Five, Inc.",
+      "url": "https://resend.com/legal/dpa",
+      "source": "rendered from the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "resend-dpa.pdf",
+      "bytes": 632644,
+      "sha256": "sha256-87e606be530aa819438538f88e12ccfb33a401fb3b773a0d6b101c303c9028ba"
+    },
+    "google": {
+      "vendor": "Google",
+      "entity": "Google Ireland Limited",
+      "url": "https://cloud.google.com/terms/data-processing-addendum",
+      "source": "HTML source of the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "google-dpa.html",
+      "bytes": 903266,
+      "sha256": "sha256-41929e13b517d7ccdcbf3dd3a69e0c0cdf8ce84f9c0ef1968d0dc56168d3c81e"
+    },
+    "notion": {
+      "vendor": "Notion",
+      "entity": "Notion Labs, Inc.",
+      "url": "https://www.notion.so/Data-Processing-Addendum-361b540101274b1fa7e16b90402b0d99",
+      "source": "rendered from the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "notion-dpa.pdf",
+      "bytes": 461351,
+      "sha256": "sha256-4b0a1d36001f8d4594b9134b0e91db2c1f31985ca00c09feafad21afe6d2d068"
+    },
+    "linear": {
+      "vendor": "Linear",
+      "entity": "Linear Orbit, Inc.",
+      "url": "https://linear.app/dpa",
+      "source": "rendered from the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "linear-dpa.pdf",
+      "bytes": 1054524,
+      "sha256": "sha256-490060cccbc957f055e22b8e6f63ee8298e4fcfe83043aa5aa323906a10566ba"
+    },
+    "slack": {
+      "vendor": "Slack",
+      "entity": "Slack Technologies Limited",
+      "url": "https://www.salesforce.com/content/dam/web/en_us/www/documents/legal/Agreements/data-processing-addendum.pdf",
+      "source": "vendor PDF",
+      "retrievedAt": "2026-09-04",
+      "file": "slack-dpa.pdf",
+      "bytes": 949330,
+      "sha256": "sha256-e425f0583d602e7f4a0010dc0456866ac33e6a508ae8f3f953abf64d7ee8119c"
+    },
+    "figma": {
+      "vendor": "Figma",
+      "entity": "Figma, Inc.",
+      "url": "https://www.figma.com/legal/dpa/",
+      "source": "rendered from the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "figma-dpa.pdf",
+      "bytes": 600934,
+      "sha256": "sha256-446822e384006754fd59d0ae0bb7e2f82ccd0bfd8aa6c24435c4d9ec15ded877"
+    },
+    "adobe": {
+      "vendor": "Adobe",
+      "entity": "Adobe Systems Software Ireland Limited",
+      "url": "https://www.adobe.com/cc-shared/assets/pdf/legal/terms/enterprise/pdfs/dpa-ww.pdf",
+      "source": "vendor PDF",
+      "retrievedAt": "2026-09-04",
+      "file": "adobe-dpa.pdf",
+      "bytes": 192612,
+      "sha256": "sha256-a0bcacf3142fff3c432dd1f6985d0f44b2f0469cdb31694f221b547f545f165d"
+    },
+    "1password": {
+      "vendor": "1Password",
+      "entity": "AgileBits Inc.",
+      "url": "https://1password.com/files/legal-center/AgileBits-DPA-v4.6-02032025.pdf",
+      "source": "vendor PDF",
+      "retrievedAt": "2026-09-04",
+      "file": "1password-dpa.pdf",
+      "bytes": 543165,
+      "sha256": "sha256-7509893bf4575eda184df66341c168ed1cfc2b3e3387c5bfa9aac5f17abe4f07"
+    },
+    "anthropic": {
+      "vendor": "Anthropic",
+      "entity": "Anthropic Ireland, Limited",
+      "url": "https://www.anthropic.com/legal/data-processing-addendum",
+      "source": "rendered from the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "anthropic-dpa.pdf",
+      "bytes": 722178,
+      "sha256": "sha256-197db1be00ca224d3d915437251e6248de89671a80b8a9a003b3203d5f4516db"
+    },
+    "openai": {
+      "vendor": "OpenAI",
+      "entity": "OpenAI Ireland Limited",
+      "url": "https://openai.com/policies/data-processing-addendum/",
+      "source": "rendered from the vendor web page",
+      "retrievedAt": "2026-09-04",
+      "file": "openai-dpa.pdf",
+      "bytes": 249400,
+      "sha256": "sha256-e39ce15aa0cff2a257506f5243ce915c6bd48ac876ea597f606033b0a3a4f566"
+    }
+  }
+}

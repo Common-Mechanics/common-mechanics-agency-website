@@ -11,7 +11,8 @@
     "capture-previews": "node scripts/capture-previews.mjs",
     "generate-types": "wrangler types",
     "deploy": "npm run build && wrangler deploy",
-    "dpa-manifest": "node scripts/data-processing-manifest.mjs"
+    "dpa-manifest": "node scripts/data-processing-manifest.mjs",
+    "fetch-dpas": "node scripts/fetch-vendor-dpas.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.6.0",
