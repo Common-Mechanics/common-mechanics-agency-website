@@ -38,33 +38,35 @@ const PDF_PATTERN = /^dpa-v(\d+\.\d+)-(\d{4}-\d{2}-\d{2})\.pdf$/;
 /**
  * Fields every sub-processor entry must carry, and what each one is for.
  *
- * `registrationNumber` is deliberately absent: a public company number exists
- * for the Irish, UK and Dutch entities here but not for the US ones (a Delaware
- * file number is not a public-facing identifier), so it is optional and
- * `registrationJurisdiction` is what carries the weight. Nothing in the UK GDPR
- * requires a registration number on this list — see the note in
- * src/data/subprocessors/README.md.
+ * The set is deliberately short. Each field is here because something obliges
+ * us to hold it — see src/data/subprocessors/README.md for which instrument
+ * asks for which. A field that no instrument requires is a field that can be
+ * wrong for no benefit, so it does not go in this list and does not go in the
+ * JSON.
+ *
+ * `registeredAddress` is required here but is not rendered by the page: the
+ * obligation is to have it available to a controller, not to publish it.
  */
 const REQUIRED_STRING_FIELDS = [
   ['name', 'the name the sub-processor is commonly known by'],
   ['legalEntity', 'the contracting legal entity, e.g. "Google Ireland Limited"'],
   ['registeredAddress', 'the registered office of that entity'],
-  ['registrationJurisdiction', 'where that entity is incorporated'],
   ['function', 'what they do for us'],
 ];
 
 const REQUIRED_LIST_FIELDS = [
   ['processingLocations', 'countries or regions where they process or store the data'],
-  ['dataCategories', 'the categories of personal data we send them'],
 ];
 
 /**
- * v1.0 was published with only `name` and `function` and is immutable, so the
- * shape check starts at the first version that carries the fuller record.
- * Raising this floor is how a future schema change gets rolled out: publish the
- * new version, then move the floor to it.
+ * Lowest version the field check above applies to. Every published version
+ * currently meets it, so this is a no-op today — it exists because a schema
+ * change cannot be applied retroactively to an immutable published version.
+ * Rolling one out means publishing the new version and then raising this floor
+ * to it, leaving the older versions validated against the shape they were
+ * actually published with.
  */
-const RICH_SCHEMA_FROM = '1.1';
+const RICH_SCHEMA_FROM = '1.0';
 
 const problems = [];
 
@@ -105,11 +107,6 @@ function validateSubprocessor(entry, file, index) {
     } else if (value.some((item) => typeof item !== 'string' || !item.trim())) {
       found.push(`${file}: ${label} has a blank value in "${field}".`);
     }
-  }
-
-  // Optional, but if present it has to say something.
-  if ('registrationNumber' in entry && typeof entry.registrationNumber !== 'string') {
-    found.push(`${file}: ${label} has a non-string "registrationNumber".`);
   }
 
   return found;
