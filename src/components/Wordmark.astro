@@ -1,0 +1,90 @@
+---
+/**
+ * The orange badge wordmark — the site logo.
+ *
+ * Plain text on the home page; on subpages it takes an `href` and doubles as
+ * the way back home. The concave corner scoops are the whole point of the
+ * mark, so the CSS lives here rather than being copied into each page.
+ *
+ * The link form wraps the badge in the anchor rather than masking the anchor
+ * itself: `mask` clips everything the element paints, focus ring included, so
+ * a ring drawn on the badge would simply be scooped away.
+ */
+interface Props {
+  /** When set, the wordmark becomes a link — used as the way home from subpages. */
+  href?: string;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { href, class: className, ...attrs } = Astro.props;
+---
+
+{href ? (
+  <a class:list={['wordmark-link', className]} href={href} {...attrs}>
+    <span class="wordmark">Common Mechanics</span>
+  </a>
+) : (
+  <p class:list={['wordmark', 'wordmark-block', className]} {...attrs}>Common Mechanics</p>
+)}
+
+<style>
+  .wordmark {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-bg);          /* inverted: page colour as the text */
+    background: var(--color-accent); /* orange badge */
+    letter-spacing: 0;
+    padding: var(--space-2) var(--space-3);
+
+    /* Inverted-radius (concave) corner scoops — mechanical cutout vibe.
+       Four radial-gradient mask quadrants, each removing a quarter-circle
+       from one corner, revealing the page colour behind the badge. */
+    --notch: 7px;
+    -webkit-mask:
+      radial-gradient(var(--notch) at top left,     #0000 98%, #000) top left,
+      radial-gradient(var(--notch) at top right,    #0000 98%, #000) top right,
+      radial-gradient(var(--notch) at bottom left,  #0000 98%, #000) bottom left,
+      radial-gradient(var(--notch) at bottom right, #0000 98%, #000) bottom right;
+    -webkit-mask-size: 51% 51%;  /* >50% so quadrants overlap and hide the centre seam */
+    -webkit-mask-repeat: no-repeat;
+    mask:
+      radial-gradient(var(--notch) at top left,     #0000 98%, #000) top left,
+      radial-gradient(var(--notch) at top right,    #0000 98%, #000) top right,
+      radial-gradient(var(--notch) at bottom left,  #0000 98%, #000) bottom left,
+      radial-gradient(var(--notch) at bottom right, #0000 98%, #000) bottom right;
+    mask-size: 51% 51%;  /* >50% so quadrants overlap and hide the centre seam */
+    mask-repeat: no-repeat;
+  }
+
+  .wordmark-block {
+    margin-bottom: var(--space-6);
+  }
+
+  /* The global rule would draw an underline across the badge; the link states
+     are carried by the badge colour instead, mirrored onto :focus-visible. */
+  .wordmark-link {
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .wordmark-link .wordmark {
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .wordmark-link:hover .wordmark {
+    background: var(--color-fg);
+  }
+
+  .wordmark-link:focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 3px;
+  }
+
+  .wordmark-link:focus-visible .wordmark {
+    background: var(--color-fg);
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import SubprocessorList from '../components/SubprocessorList.astro';
+import Wordmark from '../components/Wordmark.astro';
 import {
   agreements,
   currentSubprocessors,
@@ -18,14 +19,12 @@ const dataProtectionLead = { name: 'Taylor Jones', email: 'taylor@commonmechanic
 >
   <main class="dpa">
     <header class="section dpa-header" data-rule="bottom">
-      <p class="dpa-back-top"><a href="/">Common Mechanics</a></p>
-      <p class="section-label">Data processing</p>
+      <Wordmark href="/" class="dpa-back-top" />
       <h1 class="dpa-title">Data Processing Agreement</h1>
       <p class="dpa-lede">
         Where we handle personal data on a client's behalf we do it as their processor,
         under the agreement published here. This page holds the agreement itself and the
-        current list of sub-processors we rely on, so a client — or their counsel — can
-        check both without asking us first.
+        current list of sub-processors.
       </p>
       <p class="dpa-updated">
         Check this page periodically — last updated
@@ -36,7 +35,7 @@ const dataProtectionLead = { name: 'Taylor Jones', email: 'taylor@commonmechanic
     <section class="section dpa-body" data-rule="bottom" aria-labelledby="the-agreement">
       <h2 id="the-agreement">The agreement</h2>
       <p>
-        Each version below is the agreement exactly as it stood on its publish date.
+        Every version of our Data Processing Agreement is published and archived here.
         Superseded versions stay online so you can always read the terms that applied to a
         past engagement.
       </p>
@@ -73,10 +72,8 @@ const dataProtectionLead = { name: 'Taylor Jones', email: 'taylor@commonmechanic
         These are the third parties that may process personal data belonging to our clients,
         or to their customers and users, in the course of our work. For each one we record the
         contracting legal entity and its registered office, what it does for us, the countries
-        it processes or stores the data in, and the categories of personal data involved &mdash;
-        enough to assess an international transfer without having to write to us first. The
-        list is versioned: each version is published in full and is never edited afterwards, so
-        what follows can be relied on as a record rather than a snapshot.
+        it processes or stores the data in, and the categories of personal data involved. The
+        list is versioned: each version is published in full and is never edited afterwards.
       </p>
       <p class="dpa-version-line">
         Version {currentSubprocessors.version} &middot; effective
@@ -101,8 +98,8 @@ const dataProtectionLead = { name: 'Taylor Jones', email: 'taylor@commonmechanic
 
       <h2 id="data-protection-lead">Data protection lead</h2>
       <p>
-        {dataProtectionLead.name} (<a href={`mailto:${dataProtectionLead.email}`}>{dataProtectionLead.email}</a>).
-        Write to them about the agreement, a sub-processor, or anything else on this page.
+        Our data protection lead is {dataProtectionLead.name}
+        (<a href={`mailto:${dataProtectionLead.email}`}>{dataProtectionLead.email}</a>).
       </p>
       <p>
         How we handle personal data as a controller — visitors to this site, and people who
@@ -124,14 +121,7 @@ const dataProtectionLead = { name: 'Taylor Jones', email: 'taylor@commonmechanic
   }
 
   .dpa-back-top {
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--tracking-wide);
     margin-bottom: var(--space-8);
-  }
-
-  /* Tighter than the default label gap — the label belongs to the title here */
-  .dpa-header .section-label {
-    margin-bottom: var(--space-3);
   }
 
   .dpa-title {
