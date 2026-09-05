@@ -12,7 +12,8 @@
 	// client IPs) in Cloudflare's pipeline. Leaving it off is data minimisation
 	// under UK GDPR Art. 5(1)(c) — it removes the processing rather than
 	// documenting it. Re-enable only alongside a retention period and a
-	// corresponding line in /privacy.
+	// corresponding line in /privacy — `npm run check-privacy` fails the build
+	// while this says true and that page still claims we keep no logs.
 	"observability": {
 		"enabled": false
 	}

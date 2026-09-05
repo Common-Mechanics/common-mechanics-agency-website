@@ -1,23 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
+import Wordmark from '../components/Wordmark.astro';
+import { formatDate } from '../data/format-date';
 
-const lastUpdated = '3 September 2026';
+const lastUpdated = '2026-09-05';
 ---
 
 <Base
   title="Privacy — Common Mechanics"
-  description="How Common Mechanics Ltd handles personal data. No cookies, no analytics, no tracking — just the data a web server needs to answer a request, and the email you choose to send us."
+  description="How Common Mechanics Ltd handles personal data. No cookies, no analytics, no tracking — only what is needed to serve the page, and the email you choose to send us."
 >
   <main class="privacy">
     <header class="section privacy-header" data-rule="bottom">
-      <p class="privacy-back-top"><a href="/">Common Mechanics</a></p>
-      <p class="section-label">Privacy</p>
+      <Wordmark href="/" class="privacy-back-top" />
       <h1 class="privacy-title">Privacy notice</h1>
       <p class="privacy-lede">
         This site sets no cookies, runs no analytics and asks you for nothing. Here is
         exactly what does happen to personal data, and what you can do about it.
       </p>
-      <p class="privacy-updated">Last updated {lastUpdated}</p>
+      <p class="privacy-updated">
+        Last updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
+      </p>
     </header>
 
     <section class="section privacy-body" data-rule="bottom" aria-labelledby="who-we-are">
@@ -29,43 +32,35 @@ const lastUpdated = '3 September 2026';
       </p>
       <p>
         For anything to do with privacy or your data, email
-        <a href="mailto:privacy@commonmechanics.io">privacy@commonmechanics.io</a>. That
-        address reaches the people who can actually act on it.
+        <a href="mailto:privacy@commonmechanics.io">privacy@commonmechanics.io</a>.
       </p>
       <!-- TODO: add ICO registration number once confirmed -->
 
       <h2>The short version</h2>
       <p>
         This is a handful of static pages. No cookies. No analytics. No tag manager, no
-        tracking pixels, no third-party embeds, no forms, no accounts, no newsletter. We
-        have checked this with a network trace rather than assuming it. Nothing on this site
-        is trying to work out who you are.
-      </p>
-      <p>
-        That leaves two things: the technical data any web server needs in order to answer a
-        request, and whatever you decide to put in an email to us.
+        tracking pixels, no third-party embeds, no forms, no accounts, no newsletter.
       </p>
 
       <h2>What we process, why, and on what basis</h2>
 
       <h3>Visiting this site</h3>
       <p>
-        Our host, Cloudflare, receives your IP address, the page you asked for and standard
+        Our hosting provider receives your IP address, the page you asked for and standard
         request headers such as your browser and language. No website can serve or protect a
-        connection without them, and ours is no exception. We have request observability
-        turned off, so we keep no server logs of our own and hold no per-visitor record we
-        could look you up in. Cloudflare processes this data at its edge on our behalf to
-        route and deliver the page and to defend the site against attack and abuse, and
-        retains it only for the short period set by its own retention schedule.
+        connection without them, and ours is no exception. We keep no logs of our own, so we
+        hold no per-visitor record we could look you up in. The provider processes this data
+        at its edge on our behalf to route and deliver the page and to defend the site
+        against attack and abuse, and retains it under its own retention schedule. Which
+        company that is, and where it processes the data, is recorded in the sub-processor
+        list on our <a href="/data-processing">data processing page</a>.
       </p>
       <p>
         <strong>Purpose.</strong> Delivering this website and keeping it available and secure.
       </p>
       <p>
         <strong>Lawful basis.</strong> Legitimate interests, Article 6(1)(f) — running a site
-        people can reach and defending it from attack. Serving the page you asked for is
-        precisely what you expect when you ask for it, and the data is not used for anything
-        else.
+        people can reach and defending it from attack.
       </p>
 
       <h3>Emailing us</h3>
@@ -76,8 +71,7 @@ const lastUpdated = '3 September 2026';
         our reply.
       </p>
       <p>
-        <strong>Purpose.</strong> Answering you, and — if the conversation turns into work —
-        scoping, quoting and running the project.
+        <strong>Purpose.</strong> Receiving and responding to email queries.
       </p>
       <p>
         <strong>Lawful basis.</strong> Performance of a contract or steps taken at your
@@ -89,18 +83,6 @@ const lastUpdated = '3 September 2026';
       <p>
         Please do not send us special-category data — health, beliefs, anything of that kind.
         We have no reason to need it and would rather not hold it.
-      </p>
-
-      <h3>Our own team</h3>
-      <p>
-        The site publishes the name, work email address, LinkedIn profile and city of each
-        member of the studio, so clients know who they are dealing with and can reach the
-        right person directly. It is professional contact information, published with each
-        person's knowledge.
-      </p>
-      <p>
-        <strong>Lawful basis.</strong> Legitimate interests, Article 6(1)(f). Any of us can
-        ask for our details to be changed or taken down, and they will be.
       </p>
 
       <h2>Cookies and similar technology</h2>
@@ -124,15 +106,20 @@ const lastUpdated = '3 September 2026';
       <h2>Who else sees your data</h2>
       <ul>
         <li>
-          <strong>Cloudflare, Inc.</strong> — hosting and content delivery for this site,
+          <strong>Our hosting provider</strong> — hosting and content delivery for this site,
           acting as our processor.
         </li>
         <li>
           <strong>Our email provider</strong> — stores and delivers the mail we send and
           receive, acting as our processor.
-          <!-- TODO: name the email provider here once confirmed -->
         </li>
       </ul>
+      <p>
+        Both are named — legal entity, function and processing locations — in the versioned
+        sub-processor list on our <a href="/data-processing">data processing page</a>. That
+        list is where we keep the record current, so a change of supplier shows up there
+        rather than going unnoticed here.
+      </p>
       <p>
         That is the whole list. We do not sell personal data, share it with advertisers or
         data brokers, or use it to train anything. The only other circumstance in which we
@@ -142,40 +129,28 @@ const lastUpdated = '3 September 2026';
 
       <h2>Where your data goes</h2>
       <p>
-        Cloudflare serves this site from a global network, so your request is usually handled
-        by whichever data centre is nearest you, which may be outside the UK. Cloudflare acts
-        as our processor and its data protection terms rely on standard contractual clauses
-        together with the UK International Data Transfer Addendum — the safeguard UK GDPR
-        provides for transfers of this kind. Our email provider may process mail outside the
-        UK under the same sort of safeguard. Beyond that, we make no international transfers
-        of personal data in connection with this site.
+        Our hosting provider serves this site from a global network, so your request is
+        usually handled by whichever data centre is nearest you, which may be outside the UK.
+        It acts as our processor, and its data protection terms rely on standard contractual
+        clauses together with the UK International Data Transfer Addendum — the safeguard UK
+        GDPR provides for transfers of this kind. Our email provider may process mail outside
+        the UK under the same sort of safeguard. Beyond that, we make no international
+        transfers of personal data in connection with this site.
       </p>
 
       <h2>How long we keep things</h2>
       <ul>
         <li>
-          <strong>Request data.</strong> We hold none. Cloudflare holds connection and
-          security logs briefly under its own retention schedule; we cannot retrieve them and
-          do not keep a copy.
+          <strong>Request data.</strong> We hold none. Our hosting provider holds connection
+          and security logs briefly under its own retention schedule; we cannot retrieve them
+          and do not keep a copy.
         </li>
         <li>
-          <strong>Email that does not lead to work.</strong> Deleted within 12 months of the
-          last message.
-          <!-- TODO: confirm the 12-month retention period for general enquiries -->
-        </li>
-        <li>
-          <strong>Email connected to a project.</strong> Kept for six years after the
-          engagement ends, matching how long UK contract and tax records need to stand up.
-          <!-- TODO: confirm the six-year retention period for project correspondence -->
-        </li>
-        <li>
-          <strong>Requests about your data.</strong> We keep the request and what we did
-          about it for two years, so we can show it was handled properly.
-          <!-- TODO: confirm the two-year retention period for data-subject request records -->
-        </li>
-        <li>
-          <strong>Team details on this site.</strong> Published while the person is with the
-          studio and removed when they leave.
+          <strong>Email.</strong> We do not run a deletion clock against your messages. We
+          keep correspondence while it is live, and afterwards for as long as we could still
+          need it to answer a question about the work — a contractual, tax, insurance or
+          legal one — after which it goes. Ask us and we will tell you what we still hold
+          from a particular exchange.
         </li>
       </ul>
 
@@ -198,7 +173,7 @@ const lastUpdated = '3 September 2026';
       <p>
         To use any of these rights, email
         <a href="mailto:privacy@commonmechanics.io">privacy@commonmechanics.io</a>. We will
-        reply within one month and it costs you nothing. We may need to be reasonably sure of
+        reply within one month. We may need to be reasonably sure of
         who you are before we hand over data — replying from the address we already
         correspond with is normally enough. Some of these rights have limits, and if we
         cannot do what you have asked we will tell you plainly why.
@@ -223,8 +198,7 @@ const lastUpdated = '3 September 2026';
       <p>
         If we ever add something to this site that processes personal data — a contact form,
         analytics, an embed — we will update this page before it goes live and change the
-        date at the top. What is written here is what we actually do, not what we intend to
-        do one day.
+        date at the top.
       </p>
     </section>
 
@@ -242,14 +216,7 @@ const lastUpdated = '3 September 2026';
   }
 
   .privacy-back-top {
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--tracking-wide);
     margin-bottom: var(--space-8);
-  }
-
-  /* Tighter than the default label gap — the label belongs to the title here */
-  .privacy-header .section-label {
-    margin-bottom: var(--space-3);
   }
 
   .privacy-title {

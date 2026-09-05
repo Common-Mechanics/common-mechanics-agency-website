@@ -19,6 +19,7 @@ npm run deploy           # build + wrangler deploy
 npm run generate-types   # wrangler types → worker-configuration.d.ts (gitignored)
 npm run capture-previews # re-screenshot portfolio sites (add -- --force to redo existing)
 npm run dpa-manifest     # rebuild + verify the /data-processing data (runs as pre-dev/pre-build)
+npm run check-privacy    # verify the site still matches /privacy (runs as pre-dev/pre-build)
 ```
 
 There is no test suite and no linter. `npm run build` (Astro's type/template check)
@@ -146,6 +147,47 @@ is the point: a reader has to be able to see what the list said on a given date.
 The "last updated" line the page is required to carry is derived from the newest
 agreement and sub-processor date, never hand-written, so it cannot go stale when
 someone adds a PDF and forgets it.
+
+## The /privacy page
+
+`src/pages/privacy.astro` is plain hand-written copy — no manifest, no generated
+data. What it does have is `scripts/check-privacy-claims.mjs`, wired as `prebuild`
+and `predev` next to the DPA manifest.
+
+The notice is drafted to avoid promising anything the studio does not actually
+enforce: it gives retention *criteria* rather than durations (UK GDPR Art. 13(2)(a)
+allows either, and a clock nobody runs is a false statement), and it names
+**categories** of recipient — "our hosting provider", "our email provider" —
+pointing at `/data-processing` for the legal entity, function and processing
+locations. Art. 13(1)(e) permits categories, and the sub-processor list is
+version-controlled and immutable, so a change of supplier lands in one place
+instead of silently falsifying a company name in prose. Keep it that way: naming a
+vendor here creates a second source of truth that will drift.
+
+Two claims on the page are statements about *this repository*, and both can be
+falsified by an ordinary change somewhere else with no reason to think of the
+notice. That is what the check script is for, and a failure means the page needs
+editing, not the check:
+
+- **"We keep no logs of our own"** holds only while `wrangler.jsonc` has
+  `observability.enabled: false`. Flipping it starts retaining request logs,
+  client IPs included.
+- **"no third-party embeds" / self-hosted typefaces** holds only while nothing in
+  `src/` or `public/` loads a cross-origin subresource. The script matches
+  subresource loads only — `<script src>`, stylesheet/preconnect/preload links,
+  CSS `@import`, `<img src>`, `<iframe>`, and the Google Fonts hosts. Anchors are
+  deliberately not matched; the page links out to LinkedIn, client sites and the
+  ICO on purpose and says so.
+
+Do **not** add a "check this page periodically" line here, even though
+`/data-processing` carries one. WP29/EDPB WP260 rev.01 (¶29) calls telling data
+subjects to re-read a privacy notice for changes "not only insufficient but also
+unfair" under Art. 5(1)(a). A material change — new purpose, new category of
+recipient, a new third-country transfer, a change to how rights are exercised —
+has to be actively communicated to people we already correspond with, in advance.
+Git history is the record of what the notice said and when; there is no obligation
+to publish an archive of past versions, so the DPA page's versioning machinery is
+not needed here.
 
 ## Deployment
 
