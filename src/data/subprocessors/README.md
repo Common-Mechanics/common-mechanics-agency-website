@@ -47,9 +47,20 @@ to exercise its right to object". There is no prescribed field list.
 Entity names and addresses are transcribed from the vendor's own DPA or from the
 relevant public register (CRO, KvK, Companies House). The contracting entity
 depends on which of a vendor's entities *we* contract with, and vendors
-restructure without telling us — Anthropic contracts through its Irish entity
-for UK customers, OpenAI does not. `processingLocations` describes *our* use of
-each service and must be re-checked whenever what we send a vendor changes.
+restructure without telling us. Anthropic's commercial terms make Anthropic
+Ireland, Limited the party for the EEA, Switzerland **and the UK**; OpenAI's
+split puts the UK on the other side of the line — OpenAI OpCo, LLC for
+customers outside the EEA and Switzerland, OpenAI Ireland Limited inside it.
+Two vendors, adjacent on the list, opposite answers.
+
+OpenAI therefore appears **twice**, once per entity, with the split spelled out
+in each `function`. That is deliberate: which of the two is the sub-processor
+follows from where the contracting customer is established, and stating one
+without the other would assert a contracting position rather than describe
+OpenAI's structure.
+
+`processingLocations` describes *our* use of each service and must be
+re-checked whenever what we send a vendor changes.
 
 ## The v1.0 reset (5 September 2026)
 

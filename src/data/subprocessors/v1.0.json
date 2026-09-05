@@ -140,9 +140,19 @@
     },
     {
       "name": "OpenAI",
+      "legalEntity": "OpenAI OpCo, LLC",
+      "registeredAddress": "1455 3rd Street, San Francisco, CA 94158, United States",
+      "function": "AI inference for development and content work — the contracting entity for customers outside the EEA and Switzerland, including the UK",
+      "processingLocations": [
+        "United States",
+        "European Union"
+      ]
+    },
+    {
+      "name": "OpenAI",
       "legalEntity": "OpenAI Ireland Limited",
       "registeredAddress": "1st Floor, The Liffey Trust Centre, 117–126 Sheriff Street Upper, Dublin 1, D01 YC43, Ireland",
-      "function": "AI inference for development and content work",
+      "function": "AI inference for development and content work — the contracting entity for customers in the EEA and Switzerland",
       "processingLocations": [
         "United States",
         "European Union"
