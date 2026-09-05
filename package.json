@@ -3,16 +3,15 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "predev": "npm run dpa-manifest && npm run check-privacy",
+    "predev": "npm run dpa-manifest",
     "dev": "astro dev",
-    "prebuild": "npm run dpa-manifest && npm run check-privacy",
+    "prebuild": "npm run dpa-manifest",
     "build": "astro build",
     "preview": "npm run build && wrangler dev",
     "capture-previews": "node scripts/capture-previews.mjs",
     "generate-types": "wrangler types",
     "deploy": "npm run build && wrangler deploy",
     "dpa-manifest": "node scripts/data-processing-manifest.mjs",
-    "check-privacy": "node scripts/check-privacy-claims.mjs",
     "fetch-dpas": "node scripts/fetch-vendor-dpas.mjs"
   },
   "dependencies": {

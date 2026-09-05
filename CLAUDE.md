@@ -19,7 +19,6 @@ npm run deploy           # build + wrangler deploy
 npm run generate-types   # wrangler types → worker-configuration.d.ts (gitignored)
 npm run capture-previews # re-screenshot portfolio sites (add -- --force to redo existing)
 npm run dpa-manifest     # rebuild + verify the /data-processing data (runs as pre-dev/pre-build)
-npm run check-privacy    # verify the site still matches /privacy (runs as pre-dev/pre-build)
 ```
 
 There is no test suite and no linter. `npm run build` (Astro's type/template check)
@@ -151,43 +150,51 @@ someone adds a PDF and forgets it.
 ## The /privacy page
 
 `src/pages/privacy.astro` is plain hand-written copy — no manifest, no generated
-data. What it does have is `scripts/check-privacy-claims.mjs`, wired as `prebuild`
-and `predev` next to the DPA manifest.
+data, nothing to rebuild. The constraint on it is editorial, and it is the whole
+reason the page reads the way it does:
 
-The notice is drafted to avoid promising anything the studio does not actually
-enforce: it gives retention *criteria* rather than durations (UK GDPR Art. 13(2)(a)
-allows either, and a clock nobody runs is a false statement), and it names
-**categories** of recipient — "our hosting provider", "our email provider" —
-pointing at `/data-processing` for the legal entity, function and processing
-locations. Art. 13(1)(e) permits categories, and the sub-processor list is
-version-controlled and immutable, so a change of supplier lands in one place
-instead of silently falsifying a company name in prose. Keep it that way: naming a
-vendor here creates a second source of truth that will drift.
+**The notice states only what UK GDPR obliges it to state.** Every sentence
+asserting something the site does *not* do has been removed — no cookies, no
+analytics, no tag manager, no third-party embeds, self-hosted typefaces, no
+server logs of our own, "that is the whole list", "we do not sell personal
+data". None of it was required by Art. 13, all of it was true only of this
+build, and this page is the pattern our client sites inherit, where none of it
+may hold. A privacy notice that is *out of date* is worse than one that is
+merely generic: it is a false statement about processing, and unlike vagueness
+it is actionable.
 
-Two claims on the page are statements about *this repository*, and both can be
-falsified by an ordinary change somewhere else with no reason to think of the
-notice. That is what the check script is for, and a failure means the page needs
-editing, not the check:
+Applied to the parts that remain:
 
-- **"We keep no logs of our own"** holds only while `wrangler.jsonc` has
-  `observability.enabled: false`. Flipping it starts retaining request logs,
-  client IPs included.
-- **"no third-party embeds" / self-hosted typefaces** holds only while nothing in
-  `src/` or `public/` loads a cross-origin subresource. The script matches
-  subresource loads only — `<script src>`, stylesheet/preconnect/preload links,
-  CSS `@import`, `<img src>`, `<iframe>`, and the Google Fonts hosts. Anchors are
-  deliberately not matched; the page links out to LinkedIn, client sites and the
-  ICO on purpose and says so.
+- **Recipients are categories, not companies** — "our hosting provider", "our
+  email provider" — with `/data-processing` carrying the legal entity, function
+  and processing locations. Art. 13(1)(e) permits categories, and the
+  sub-processor list is versioned and immutable, so a change of supplier lands
+  in one place. Naming a vendor in this prose creates a second source of truth
+  that will drift.
+- **Retention is criteria, not durations.** Art. 13(2)(a) allows either, and a
+  12-month/six-year clock nobody actually runs is a false statement rather than
+  a strict one.
+- **Staff are not covered here.** Employee and founder data belongs in a staff
+  notice, not in the notice a visitor reads.
+
+An earlier revision guarded the removed claims with a `prebuild` script that
+failed the build when `wrangler.jsonc` turned observability on or when anything
+in `src/`/`public/` loaded a cross-origin subresource. It worked, but it could
+only ever police this one repository, which is the opposite of what this page
+needs to be. Deleting the claims deleted the need for it. Don't reintroduce
+either half.
 
 Do **not** add a "check this page periodically" line here, even though
 `/data-processing` carries one. WP29/EDPB WP260 rev.01 (¶29) calls telling data
 subjects to re-read a privacy notice for changes "not only insufficient but also
 unfair" under Art. 5(1)(a). A material change — new purpose, new category of
 recipient, a new third-country transfer, a change to how rights are exercised —
-has to be actively communicated to people we already correspond with, in advance.
-Git history is the record of what the notice said and when; there is no obligation
-to publish an archive of past versions, so the DPA page's versioning machinery is
-not needed here.
+has to be actively communicated, in advance, to the people we actually process:
+correspondents and clients. Anonymous visitors are served the current notice on
+every visit, so there is nothing to notify them of. The DPA page's line answers
+Art. 28(2) instead, a contractual duty owed to a *controller*, which is why the
+two pages differ on purpose. Git history is the record of what the notice said
+and when, so there is no versioning machinery to build here.
 
 ## Deployment
 
